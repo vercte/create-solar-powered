@@ -1,0 +1,6 @@
+// 1.21.1	2026-05-07T10:04:53.911601	Registrate Provider for createsolar [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+f1aa5ba183fd7e66310d45f942e3fe98e2b9257e assets/createsolar/blockstates/solar_panel.json
+a385eaeac2d9dc303159fe69fd516a638a16a20b assets/createsolar/lang/en_ud.json
+7fd8b1d98f6bdb553e6a4b0985feff5a24d3559c assets/createsolar/lang/en_us.json
+29136102d9b6a6b275d1e71b59152b54bfaaf513 assets/createsolar/models/item/solar_panel.json
+b66865cbf6ebe2812e23ec72c4686a071e552144 data/createsolar/loot_table/blocks/solar_panel.json

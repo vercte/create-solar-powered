@@ -1,0 +1,32 @@
+package uwu.hachiro.createsolar;
+
+import com.simibubi.create.foundation.data.BlockStateGen;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
+import uwu.hachiro.createsolar.content.panel.SolarPanelBlock;
+import uwu.hachiro.createsolar.content.panel.SolarPanelCTBehaviour;
+
+import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
+
+public class SolarBlocks {
+    private static final CreateRegistrate REGISTRATE = CreateSolarPowered.registrate();
+
+    public static final BlockEntry<SolarPanelBlock> SOLAR_PANEL = REGISTRATE.block("solar_panel", SolarPanelBlock::new)
+            .properties(p -> p
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(1.0F)
+                    .sound(SoundType.NETHERITE_BLOCK)
+            )
+            .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, s -> {
+                boolean active = s.getValue(SolarPanelBlock.ACTIVE);
+                String name = c.getName() + (active ? "_active" : "");
+                return p.models().getExistingFile(p.modLoc("block/" + name));
+            }))
+            .onRegister(connectedTextures(() -> new SolarPanelCTBehaviour(SolarSpriteShifts.SOLAR_PANEL_TOP, SolarSpriteShifts.SOLAR_PANEL_BOTTOM)))
+            .simpleItem()
+            .register();
+
+    public static void loadAndRegister() {}
+}
