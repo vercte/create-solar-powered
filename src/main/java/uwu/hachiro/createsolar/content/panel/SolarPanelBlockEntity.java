@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelEnergyStorage;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import static uwu.hachiro.createsolar.content.panel.SolarPanelBlock.ACTIVE;
 
 public class SolarPanelBlockEntity extends SmartBlockEntity {
     private final SolarPanelEnergyStorage energyStorage;
+    private SolarPanelSharedEnergyStorage sharedStorage;
     private boolean active;
     private int nextUpdate;
     private int lastRedstoneOutput;
@@ -29,6 +32,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         super(type, pos, state);
 
         this.energyStorage = new SolarPanelEnergyStorage(this,0);
+        this.sharedStorage = null;
         this.active = false;
         this.nextUpdate = 0;
         this.lastRedstoneOutput = 0;
@@ -94,12 +98,20 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
     @Nullable
     public static IEnergyStorage getCapability(SolarPanelBlockEntity be, Direction side) {
-        if (side == Direction.DOWN) return be.energyStorage;
+        if (side == Direction.DOWN) return be.sharedStorage != null ? be.sharedStorage : be.energyStorage;
         return null;
     }
 
-    SolarPanelEnergyStorage getEnergyStorage() {
+    public SolarPanelEnergyStorage getEnergyStorage() {
         return energyStorage;
+    }
+
+    public SolarPanelSharedEnergyStorage getSharedEnergyStorage() {
+        return sharedStorage;
+    }
+
+    public void setSharedEnergyStorage(SolarPanelSharedEnergyStorage sharedStorage) {
+        this.sharedStorage = sharedStorage;
     }
 
     @Override

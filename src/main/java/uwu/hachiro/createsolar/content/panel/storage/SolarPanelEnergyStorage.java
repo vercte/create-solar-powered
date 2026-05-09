@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.content.panel;
+package uwu.hachiro.createsolar.content.panel.storage;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.IntTag;
@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.SolarConfig;
+import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
 
 public class SolarPanelEnergyStorage implements IEnergyStorage, INBTSerializable<Tag> {
     protected SolarPanelBlockEntity parent;
@@ -23,7 +24,7 @@ public class SolarPanelEnergyStorage implements IEnergyStorage, INBTSerializable
         return 0;
     }
 
-    int insertEnergy(int toReceive) {
+    public int insertEnergy(int toReceive) {
         if (toReceive <= 0) return 0;
 
         int energyReceived = Mth.clamp(getMaxEnergyStored() - this.energy, 0, toReceive);

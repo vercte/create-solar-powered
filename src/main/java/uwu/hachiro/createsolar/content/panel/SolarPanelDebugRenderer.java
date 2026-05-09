@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 
 public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBlockEntity> {
     private final BlockEntityRendererProvider.Context context;
@@ -22,14 +23,18 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
 
     @Override
     public void render(@NotNull SolarPanelBlockEntity be, float dt, @NotNull PoseStack pose, @NotNull MultiBufferSource buffer, int light, int overlay) {
-        Font font = context.getFont();
-        int energy = be.getEnergyStorage().energy;
-        String label = energy + "⚡";
+        if(Minecraft.getInstance().options.hideGui) return;
 
+        Font font = context.getFont();
+        int energy = be.getEnergyStorage().getEnergyStored();
+
+        SolarPanelSharedEnergyStorage storage = be.getSharedEnergyStorage();
+        String label = energy + "⚡, " +
+                (storage != null ? storage.toString() : "x");
         pose.pushPose();
 
         pose.mulPose(Axis.YP.rotationDegrees(180.0F));
-        float scale = 0.03f;
+        float scale = 0.02f;
         pose.translate(-0.5f, 1, -0.5);
         pose.scale(scale, -scale, scale);
         Vec3 cameraPosition = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
@@ -44,7 +49,7 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
         font.drawInBatch(
                 label,
                 -font.width(label) / 2f,
-                0,
+                font.lineHeight / 2f,
                 0,
                 false,
                 pose.last().pose(),
@@ -56,7 +61,7 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
         font.drawInBatch(
                 label,
                 -font.width(label) / 2f,
-                0,
+                font.lineHeight / 2f,
                 0xFFFFFFFF,
                 false,
                 pose.last().pose(),
