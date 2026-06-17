@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "tag": "c:gems/amethyst"
+    },
+    "d": {
+      "item": "minecraft:daylight_detector"
+    },
+    "g": {
+      "tag": "c:plates/gold"
+    },
+    "t": {
+      "item": "create:electron_tube"
+    }
+  },
+  "pattern": [
+    "ada",
+    " g ",
+    " t "
+  ],
+  "result": {
+    "count": 2,
+    "id": "createsolar:solar_panel"
+  }
+}

@@ -1,0 +1,28 @@
+package uwu.hachiro.createsolar.util.datagen;
+
+import com.tterrag.registrate.providers.ProviderType;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import uwu.hachiro.createsolar.CreateSolarPowered;
+import uwu.hachiro.createsolar.SolarCreativeTabs;
+import uwu.hachiro.createsolar.util.datagen.data.SolarStandardRecipeGen;
+
+import java.util.concurrent.CompletableFuture;
+
+public class SolarDatagen {
+    public static void gatherData(final GatherDataEvent event) {
+        PackOutput output = event.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+
+        if(event.includeServer()) {
+            event.addProvider(new SolarStandardRecipeGen(output, provider));
+        }
+    }
+
+    public static void gatherExtraLang(final GatherDataEvent event) {
+        CreateSolarPowered.registrate().addDataGenerator(ProviderType.LANG, p -> {
+            p.add(SolarCreativeTabs.BASE.get(), "Create: Solar Powered");
+        });
+    }
+}

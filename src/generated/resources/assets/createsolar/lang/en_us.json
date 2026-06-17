@@ -1,3 +1,4 @@
 {
-  "block.createsolar.solar_panel": "Solar Panel"
+  "block.createsolar.solar_panel": "Solar Panel",
+  "itemGroup.createsolar.base": "Create: Solar Powered"
 }

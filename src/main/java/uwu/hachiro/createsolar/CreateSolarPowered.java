@@ -8,6 +8,7 @@ import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -15,6 +16,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
+import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 
 @Mod(CreateSolarPowered.ID)
 public class CreateSolarPowered {
@@ -34,8 +36,11 @@ public class CreateSolarPowered {
 
         SolarBlocks.loadAndRegister();
         SolarBlockEntities.loadAndRegister();
+        SolarCreativeTabs.loadAndRegister(bus);
 
         bus.addListener(this::registerCapabilities);
+        bus.addListener(SolarDatagen::gatherData);
+        bus.addListener(EventPriority.HIGHEST, SolarDatagen::gatherExtraLang);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, SolarConfig.SPEC);
     }
