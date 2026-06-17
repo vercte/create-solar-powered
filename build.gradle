@@ -24,6 +24,10 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+    maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 dependencies {
@@ -33,6 +37,7 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}"
     implementation "com.tterrag.registrate:Registrate:${registrate_version}"
 
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     runtimeOnly "maven.modrinth:createaddition:neoforge-${minecraft_version}-${crafts_additions_version}"
 
     runtimeOnly "net.vercte.ponderous_planes:ponderous_planes-mc${minecraft_version}:${ponderous_planes_version}"
