@@ -28,12 +28,6 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     }
 
     @Override
-    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean isMoving) {
-        if (level.isClientSide()) return;
-        SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(level, pos);
-    }
-
-    @Override
     public boolean canConnectRedstone(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @Nullable Direction direction) {
         return true;
     }

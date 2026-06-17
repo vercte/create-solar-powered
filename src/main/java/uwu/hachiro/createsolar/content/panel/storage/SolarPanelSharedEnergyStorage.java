@@ -1,5 +1,6 @@
 package uwu.hachiro.createsolar.content.panel.storage;
 
+import com.mojang.logging.LogUtils;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
@@ -7,7 +8,8 @@ import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
 import java.util.WeakHashMap;
 
 public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
-    private WeakHashMap<SolarPanelBlockEntity, SolarPanelEnergyStorage> storages;
+    private final WeakHashMap<SolarPanelBlockEntity, SolarPanelEnergyStorage> storages;
+    private boolean client = false;
     private boolean locked;
 
     public SolarPanelSharedEnergyStorage() {
@@ -23,6 +25,7 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     }
 
     public void assimilate(SolarPanelBlockEntity entity) {
+        client = entity.getLevel().isClientSide();
         if(locked()) throw new UnsupportedOperationException("Cannot use locked SolarPanelSharedEnergyStorage");
         entity.setSharedEnergyStorage(this);
         storages.put(entity, entity.getEnergyStorage());

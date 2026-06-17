@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         this.energyStorage = new SolarPanelEnergyStorage(this,0);
         this.sharedStorage = null;
         this.active = false;
-        this.nextUpdate = 0;
+        this.nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
         this.lastRedstoneOutput = 0;
     }
 
@@ -48,6 +49,10 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
         if (nextUpdate-- > 0) return;
         nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
+
+        if(sharedStorage == null) {
+            SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(level, worldPosition);
+        }
 
         int output = calculateOutput();
         boolean nowActive = output > 0;
@@ -87,8 +92,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
         assert level != null;
 
-        BlockPos pos = this.getBlockPos();
-        this.level.setBlockAndUpdate(pos, getBlockState().setValue(ACTIVE, to));
+        this.level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, to));
         notifyUpdate();
     }
 
@@ -98,7 +102,11 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
     @Nullable
     public static IEnergyStorage getCapability(SolarPanelBlockEntity be, Direction side) {
-        if (side == Direction.DOWN) return be.sharedStorage != null ? be.sharedStorage : be.energyStorage;
+        if (side == Direction.DOWN) {
+            return be.sharedStorage != null ?
+                    be.sharedStorage :
+                    SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(be.getLevel(), be.getBlockPos());
+        }
         return null;
     }
 
@@ -112,6 +120,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
     public void setSharedEnergyStorage(SolarPanelSharedEnergyStorage sharedStorage) {
         this.sharedStorage = sharedStorage;
+        invalidateCapabilities();
     }
 
     @Override
