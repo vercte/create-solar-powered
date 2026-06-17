@@ -37,6 +37,9 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}"
     implementation "com.tterrag.registrate:Registrate:${registrate_version}"
 
+    implementation "maven.modrinth:jade:${jade_version}+neoforge"
+    implementation "maven.modrinth:jade-addons-forge:${jade_addons_version}+neoforge"
+
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     runtimeOnly "maven.modrinth:createaddition:neoforge-${minecraft_version}-${crafts_additions_version}"
 
