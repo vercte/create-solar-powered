@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelEnergyStorage;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelExposedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
@@ -23,17 +22,18 @@ import java.util.List;
 import static uwu.hachiro.createsolar.content.panel.SolarPanelBlock.ACTIVE;
 
 public class SolarPanelBlockEntity extends SmartBlockEntity {
-    private final SolarPanelEnergyStorage energyStorage;
     private SolarPanelSharedEnergyStorage sharedStorage;
+    private final SolarPanelExposedEnergyStorage exposedStorage;
     private boolean active;
+    private int energy;
     private int nextUpdate;
     private int lastRedstoneOutput;
 
     public SolarPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
-        this.energyStorage = new SolarPanelEnergyStorage(this,0);
         this.sharedStorage = null;
+        this.exposedStorage = new SolarPanelExposedEnergyStorage(this);
         this.active = false;
         this.nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
         this.lastRedstoneOutput = 0;
@@ -67,7 +67,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
             level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
 
-        energyStorage.insertEnergy(output);
+        addEnergy(output);
     }
 
     private int calculateOutput() {
@@ -87,12 +87,12 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         return (int)(SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get() * finalFactor);
     }
 
-    public void setActive(boolean to) {
-        this.active = to;
+    public void setActive(boolean active) {
+        this.active = active;
 
         assert level != null;
 
-        this.level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, to));
+        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, active));
         notifyUpdate();
     }
 
@@ -103,25 +103,39 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
     @Nullable
     public static IEnergyStorage getCapability(SolarPanelBlockEntity be, Direction side) {
         if (side == Direction.DOWN) {
-            return be.sharedStorage != null ?
-                    be.sharedStorage :
-                    SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(be.getLevel(), be.getBlockPos());
+            if(be.sharedStorage == null) SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(be.getLevel(), be.getBlockPos());
+            return be.exposedStorage;
         }
         return null;
     }
 
-    public SolarPanelEnergyStorage getEnergyStorage() {
-        return energyStorage;
-    }
-
+    @Nullable
     public SolarPanelSharedEnergyStorage getSharedEnergyStorage() {
         return sharedStorage;
     }
 
     public void setSharedEnergyStorage(SolarPanelSharedEnergyStorage sharedStorage) {
         this.sharedStorage = sharedStorage;
-        invalidateCapabilities();
     }
+
+    // region Energy Storage
+    public int getEnergyStored() {
+        return energy;
+    }
+
+    public void addEnergy(int amount) {
+        int max = SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.getAsInt();
+        int toAdd = Math.min(amount, max - energy);
+        energy += toAdd;
+        notifyUpdate();
+    }
+
+    public int extractEnergy(int amount, boolean simulate) {
+        int toExtract = Math.clamp(amount, 0, energy);
+        if(!simulate) energy -= toExtract;
+        return toExtract;
+    }
+    // endregion
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
@@ -135,7 +149,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         tag.putBoolean("Active", active);
         tag.putInt("NextUpdate", nextUpdate);
         tag.putInt("LastRedstoneOutput", lastRedstoneOutput);
-        tag.put("Energy", energyStorage.serializeNBT(registries));
+        tag.putInt("Energy", energy);
     }
 
     @Override
@@ -145,9 +159,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         this.active = tag.getBoolean("Active");
         this.nextUpdate = tag.getInt("NextUpdate");
         this.lastRedstoneOutput = tag.getInt("LastRedstoneOutput");
-
-        Tag energy = tag.get("Energy");
-        if (energy == null) return;
-        this.energyStorage.deserializeNBT(registries, energy);
+        this.energy = tag.getInt("Energy");
     }
 }

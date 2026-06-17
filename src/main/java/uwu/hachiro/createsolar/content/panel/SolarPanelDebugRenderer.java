@@ -27,7 +27,7 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
         if(Minecraft.getInstance().options.hideGui) return;
 
         Font font = context.getFont();
-        int energy = be.getEnergyStorage().getEnergyStored();
+        int energy = be.getEnergyStored();
 
         SolarPanelSharedEnergyStorage storage = be.getSharedEnergyStorage();
         String label = energy + (storage != null ? "&" : "");

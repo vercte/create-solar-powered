@@ -1,34 +1,38 @@
 package uwu.hachiro.createsolar.content.panel.storage;
 
-import com.mojang.logging.LogUtils;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
 
-import java.util.WeakHashMap;
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
-    private final WeakHashMap<SolarPanelBlockEntity, SolarPanelEnergyStorage> storages;
-    private boolean client = false;
+    private final Set<WeakReference<SolarPanelBlockEntity>> storages;
     private boolean locked;
 
     public SolarPanelSharedEnergyStorage() {
-        storages = WeakHashMap.newWeakHashMap(16);
+        storages = new HashSet<>();
         locked = false;
     }
 
-    public void combineInto(SolarPanelSharedEnergyStorage storage) {
-        storage.storages.putAll(storages);
-        storages.keySet().forEach(b -> b.setSharedEnergyStorage(storage));
-        storage.storages.clear();
+    public void combineInto(SolarPanelSharedEnergyStorage newStorage) {
+        getSet().forEach(be -> {
+            be.setSharedEnergyStorage(newStorage);
+            newStorage.storages.add(new WeakReference<>(be));
+        });
+
+        storages.clear();
         locked = true;
     }
 
     public void assimilate(SolarPanelBlockEntity entity) {
-        client = entity.getLevel().isClientSide();
+        assert entity.getLevel() != null;
         if(locked()) throw new UnsupportedOperationException("Cannot use locked SolarPanelSharedEnergyStorage");
+
         entity.setSharedEnergyStorage(this);
-        storages.put(entity, entity.getEnergyStorage());
+        storages.add(new WeakReference<>(entity));
     }
 
     private boolean locked() {
@@ -40,20 +44,25 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     }
 
     @Override
-    public int receiveEnergy(int toReceive, boolean simulate) {
+    public int receiveEnergy(int amount, boolean simulate) {
         return 0;
     }
 
     @Override
-    public int extractEnergy(int toExtract, boolean simulate) {
+    public int extractEnergy(int amount, boolean simulate) {
+        return extractEnergy(amount, simulate, null);
+    }
+
+    public int extractEnergy(int amount, boolean simulate, SolarPanelBlockEntity ignored) {
         if(locked()) throw new UnsupportedOperationException("Cannot use locked SolarPanelSharedEnergyStorage");
 
-        int left = toExtract;
-        for(SolarPanelEnergyStorage storage : storages.values()) {
+        int left = amount;
+        for(SolarPanelBlockEntity panel : getSet()) {
+            if(panel == ignored) continue;
             if(left <= 0) break;
-            left -= storage.extractEnergy(left, simulate);
+            left -= panel.extractEnergy(left, simulate);
         }
-        return toExtract - left;
+        return amount - left;
     }
 
     @Override
@@ -61,13 +70,27 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
         if(locked()) throw new UnsupportedOperationException("Cannot use locked SolarPanelSharedEnergyStorage");
 
         int sum = 0;
-        for(SolarPanelEnergyStorage storage : storages.values()) sum += storage.getEnergyStored();
+        for(SolarPanelBlockEntity storage : getSet()) sum += storage.getEnergyStored();
         return sum;
+    }
+
+    private Set<SolarPanelBlockEntity> getSet() {
+        Set<WeakReference<SolarPanelBlockEntity>> toRemove = new HashSet<>();
+        Set<SolarPanelBlockEntity> output = new HashSet<>();
+        for(WeakReference<SolarPanelBlockEntity> weakReference : storages) {
+            if(weakReference.get() != null) {
+                output.add(weakReference.get());
+            } else toRemove.add(weakReference);
+        }
+
+        toRemove.forEach(storages::remove);
+
+        return output;
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return storages.size() * SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.get();
+        return getPanels() * SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.get();
     }
 
     @Override
