@@ -5,7 +5,9 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -15,6 +17,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
 public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPanelBlockEntity> {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -23,6 +26,16 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     public SolarPanelBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
+    }
+
+    @Override
+    protected void onRemove(@NotNull BlockState original, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState replacement, boolean flag) {
+        if(!original.is(replacement.getBlock())) {
+            BlockEntity be = level.getBlockEntity(blockPos);
+            if(be instanceof SolarPanelBlockEntity panel && panel.getSharedEnergyStorage() != null)
+                SolarPanelSharedEnergyStoragePropagator.trySplit(level, blockPos);
+        }
+        super.onRemove(original, level, blockPos, replacement, flag);
     }
 
     @Override

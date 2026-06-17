@@ -2,6 +2,7 @@ package uwu.hachiro.createsolar.content.panel;
 
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -28,6 +29,8 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
     private int energy;
     private int nextUpdate;
     private int lastRedstoneOutput;
+
+    public int sharedHash = -1;
 
     public SolarPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -109,6 +112,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         return null;
     }
 
+    // region Energy Storage
     @Nullable
     public SolarPanelSharedEnergyStorage getSharedEnergyStorage() {
         return sharedStorage;
@@ -116,9 +120,9 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
     public void setSharedEnergyStorage(SolarPanelSharedEnergyStorage sharedStorage) {
         this.sharedStorage = sharedStorage;
+        if(SharedConstants.IS_RUNNING_IN_IDE) notifyUpdate(); // it only needs to update for the debug renderer
     }
 
-    // region Energy Storage
     public int getEnergyStored() {
         return energy;
     }
@@ -150,6 +154,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         tag.putInt("NextUpdate", nextUpdate);
         tag.putInt("LastRedstoneOutput", lastRedstoneOutput);
         tag.putInt("Energy", energy);
+        if(SharedConstants.IS_RUNNING_IN_IDE) tag.putInt("SharedHash", sharedStorage != null && sharedStorage.getPanels() > 1 ? sharedStorage.hashCode() : -1);
     }
 
     @Override
@@ -160,5 +165,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         this.nextUpdate = tag.getInt("NextUpdate");
         this.lastRedstoneOutput = tag.getInt("LastRedstoneOutput");
         this.energy = tag.getInt("Energy");
+        if(SharedConstants.IS_RUNNING_IN_IDE) this.sharedHash = tag.getInt("SharedHash");
     }
 }

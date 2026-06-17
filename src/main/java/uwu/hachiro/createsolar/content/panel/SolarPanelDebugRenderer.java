@@ -3,6 +3,7 @@ package uwu.hachiro.createsolar.content.panel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.createmod.catnip.theme.Color;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LightTexture;
@@ -13,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 
 public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBlockEntity> {
     private final BlockEntityRendererProvider.Context context;
@@ -24,14 +24,15 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
 
     @Override
     public void render(@NotNull SolarPanelBlockEntity be, float dt, @NotNull PoseStack pose, @NotNull MultiBufferSource buffer, int light, int overlay) {
+        if(!SharedConstants.IS_RUNNING_IN_IDE) return;
         if(Minecraft.getInstance().options.hideGui) return;
 
         Font font = context.getFont();
         int energy = be.getEnergyStored();
 
-        SolarPanelSharedEnergyStorage storage = be.getSharedEnergyStorage();
-        String label = energy + (storage != null ? "&" : "");
-        int color = storage != null ? Color.generateFromLong(storage.hashCode()).getRGB() : 0xFFFFFFFF;
+        int sharedHash = be.sharedHash;
+        String label = energy + (sharedHash != -1 ? "&" : "");
+        int color = sharedHash != -1 ? Color.generateFromLong(sharedHash).getRGB() : 0xFFFFFFFF;
 
         pose.pushPose();
 
@@ -74,5 +75,10 @@ public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBl
         );
 
         pose.popPose();
+    }
+
+    @Override
+    public int getViewDistance() {
+        return 8;
     }
 }
