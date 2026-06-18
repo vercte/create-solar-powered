@@ -39,6 +39,8 @@ public class CreateSolarPowered {
         SolarBlockEntities.loadAndRegister();
         SolarCreativeTabs.loadAndRegister(bus);
 
+        SolarParticles.loadAndRegister(bus);
+
         bus.addListener(this::registerCapabilities);
         bus.addListener(SolarPackets::registerPayloadHandlers);
         bus.addListener(SolarDatagen::gatherData);

@@ -4,6 +4,8 @@ import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -19,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
+import uwu.hachiro.createsolar.SolarParticles;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
 public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPanelBlockEntity> {
@@ -71,6 +74,27 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(ACTIVE);
+    }
+
+    @Override
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, RandomSource random) {
+        if(!state.getValue(ACTIVE)) return;
+        if (random.nextInt(4) == 0) {
+            int amount = random.nextInt(2);
+            for(int i = 0; i < amount; i++) {
+                double xd = (14d/16) - random.nextDouble() * (12d/16);
+                double zd = (14d/16) - random.nextDouble() * (12d/16);
+                level.addParticle(
+                        SolarParticles.SPARKLE.get(),
+                        pos.getX() + xd,
+                        pos.getY() + 0.6,
+                        pos.getZ() + zd,
+                        random.nextGaussian() * 0.005,
+                        random.nextGaussian() * 0.005,
+                        random.nextGaussian() * 0.005
+                );
+            }
+        }
     }
 
     @Override
