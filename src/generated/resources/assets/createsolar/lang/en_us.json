@@ -1,8 +1,10 @@
 {
   "block.createsolar.solar_panel": "Solar Panel",
   "createsolar.tooltip.energy.capacity": "Capacity:",
+  "createsolar.tooltip.energy.flowing_down": "↓ Energy flows Downward",
+  "createsolar.tooltip.energy.output": "Current Output:",
   "createsolar.tooltip.energy.stored": "Stored Energy:",
   "createsolar.tooltip.solar_panel.info": "Solar Panel Info:",
-  "createsolar.tooltip.solar_panel.output": "Current Output:",
+  "createsolar.tooltip.solar_panel.obstructed": "Not enough sunlight",
   "itemGroup.createsolar.base": "Create: Solar Powered"
 }

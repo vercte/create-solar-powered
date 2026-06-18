@@ -10,10 +10,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelDefaultEnergyStorage;
@@ -36,6 +39,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     private int energy;
     private int nextUpdate;
     private int lastOutput;
+    private boolean outputtingBelow;
     private int lastRedstoneOutput;
 
     public int sharedHash = -1;
@@ -81,6 +85,14 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
             level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
 
+        outputtingBelow = false;
+        IEnergyStorage energyCapability = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().below(), Direction.DOWN);
+        if(energyCapability != null && energyCapability.canReceive()) {
+            int recieved = energyCapability.receiveEnergy(output, false);
+            output -= recieved;
+            if(recieved > 0) outputtingBelow = true;
+        }
+
         addEnergy(output);
     }
 
@@ -110,6 +122,8 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         notifyUpdate();
     }
 
+    public boolean isOutputtingBelow() { return outputtingBelow; }
+
     public int getLastOutput() {
         return lastOutput;
     }
@@ -138,16 +152,32 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
                 .withStyle(ChatFormatting.WHITE))
                 .forGoggles(tooltip);
 
+        boolean obstructed = EnergyResultPacketS2C.getLastOutput() == 0 && (!level.canSeeSky(getBlockPos()) || !(calculateOutput() > 0));
+        if(obstructed)
+            SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.obstructed")
+                            .withStyle(ChatFormatting.RED))
+                    .forGoggles(tooltip);
+
+        if(!obstructed && EnergyResultPacketS2C.isOutputtingBelow()) {
+            SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.flowing_down")
+                    .withStyle(ChatFormatting.YELLOW))
+                    .forGoggles(tooltip);
+        }
+
         int outputPerSecond = EnergyResultPacketS2C.getLastOutput() *
                 (20 / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt());
         int outputPercentage = (int)((double)EnergyResultPacketS2C.getLastOutput() / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
 
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.output")
-                .withStyle(ChatFormatting.GRAY))
-                .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(" ")
-                .append(SolarLang.formatEnergy(outputPerSecond)).append("⚡/s (" + outputPercentage + "%)")
-                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+        if(!obstructed) {
+            SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.output")
+                    .withStyle(ChatFormatting.GRAY))
+                    .forGoggles(tooltip);
+            SolarLang.builder().add(Component.literal(" ")
+                    .append(SolarLang.formatEnergy(outputPerSecond)).append("⚡/s (" + outputPercentage + "%)")
+                    .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+        }
+
+        if(!obstructed && EnergyResultPacketS2C.isOutputtingBelow()) return true;
 
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.stored")
                 .withStyle(ChatFormatting.GRAY))

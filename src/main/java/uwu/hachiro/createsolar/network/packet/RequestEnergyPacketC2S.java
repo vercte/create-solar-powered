@@ -47,6 +47,6 @@ public record RequestEnergyPacketC2S(BlockPos pos) implements CustomPacketPayloa
         int energy = shared != null ? shared.getEnergyStored() : panel.getEnergyStored();
         int capacity = shared != null ? shared.getMaxEnergyStored() : SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.getAsInt();
 
-        PacketDistributor.sendToPlayer(player, new EnergyResultPacketS2C(panel.getLastOutput(), energy, capacity));
+        PacketDistributor.sendToPlayer(player, new EnergyResultPacketS2C(panel.isOutputtingBelow(), panel.getLastOutput(), energy, capacity));
     }
 }
