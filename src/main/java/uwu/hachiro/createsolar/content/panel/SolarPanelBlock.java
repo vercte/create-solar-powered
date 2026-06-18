@@ -4,6 +4,8 @@ import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,13 +31,20 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState original, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState replacement, boolean flag) {
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState state, @Nullable LivingEntity entity, @NotNull ItemStack stack) {
+        SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(level, blockPos);
+    }
+
+    @Override
+    protected void onRemove(@NotNull BlockState original, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState replacement, boolean isMoving) {
         if(!original.is(replacement.getBlock())) {
             BlockEntity be = level.getBlockEntity(blockPos);
-            if(be instanceof SolarPanelBlockEntity panel && panel.getSharedEnergyStorage() != null)
+            if(be instanceof SolarPanelBlockEntity panel && panel.getSharedEnergyStorage() != null) {
                 SolarPanelSharedEnergyStoragePropagator.trySplit(level, blockPos);
+                panel.getSharedEnergyStorage().remove(panel);
+            }
         }
-        super.onRemove(original, level, blockPos, replacement, flag);
+        super.onRemove(original, level, blockPos, replacement, isMoving);
     }
 
     @Override

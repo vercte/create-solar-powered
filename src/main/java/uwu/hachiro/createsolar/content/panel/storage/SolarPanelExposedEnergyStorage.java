@@ -34,7 +34,7 @@ public class SolarPanelExposedEnergyStorage implements IEnergyStorage {
 
     @Override
     public int getMaxEnergyStored() {
-        return getShared() != null ? getShared().getEnergyStored() : SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.getAsInt();
+        return getShared() != null ? getShared().getMaxEnergyStored() : SolarConfig.SOLAR_PANEL_MAX_ENERGY_STORED.getAsInt();
     }
 
     @Override

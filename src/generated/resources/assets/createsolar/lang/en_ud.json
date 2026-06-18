@@ -1,4 +1,8 @@
 {
   "block.createsolar.solar_panel": "ןǝuɐԀ ɹɐןoS",
+  "createsolar.tooltip.energy.capacity": ":ʎʇıɔɐdɐƆ",
+  "createsolar.tooltip.energy.stored": ":ʎbɹǝuƎ pǝɹoʇS",
+  "createsolar.tooltip.solar_panel.info": ":oɟuI ןǝuɐԀ ɹɐןoS",
+  "createsolar.tooltip.solar_panel.output": ":ʇndʇnO ʇuǝɹɹnƆ",
   "itemGroup.createsolar.base": "pǝɹǝʍoԀ ɹɐןoS :ǝʇɐǝɹƆ"
 }

@@ -1,12 +1,14 @@
 package uwu.hachiro.createsolar.content.panel;
 
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import net.minecraft.SharedConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,20 +16,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
+import uwu.hachiro.createsolar.content.panel.storage.SolarPanelDefaultEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelExposedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
+import uwu.hachiro.createsolar.network.packet.RequestEnergyPacketC2S;
+import uwu.hachiro.createsolar.network.packet.EnergyResultPacketS2C;
+import uwu.hachiro.createsolar.util.SolarLang;
 
 import java.util.List;
 
 import static uwu.hachiro.createsolar.content.panel.SolarPanelBlock.ACTIVE;
 
-public class SolarPanelBlockEntity extends SmartBlockEntity {
+public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     private SolarPanelSharedEnergyStorage sharedStorage;
     private final SolarPanelExposedEnergyStorage exposedStorage;
+    private final SolarPanelDefaultEnergyStorage defaultStorage;
     private boolean active;
     private int energy;
     private int nextUpdate;
+    private int lastOutput;
     private int lastRedstoneOutput;
 
     public int sharedHash = -1;
@@ -37,6 +45,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
         this.sharedStorage = null;
         this.exposedStorage = new SolarPanelExposedEnergyStorage(this);
+        this.defaultStorage = new SolarPanelDefaultEnergyStorage(this);
         this.active = false;
         this.nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
         this.lastRedstoneOutput = 0;
@@ -60,6 +69,8 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         int output = calculateOutput();
         boolean nowActive = output > 0;
         if (active != nowActive) setActive(nowActive);
+
+        lastOutput = output;
 
         int redstoneOutput = (int)(
                 Mth.clamp(0, (double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get(), 1) * 15
@@ -99,6 +110,10 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         notifyUpdate();
     }
 
+    public int getLastOutput() {
+        return lastOutput;
+    }
+
     public int getRedstoneOutput() {
         return lastRedstoneOutput;
     }
@@ -108,8 +123,46 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         if (side == Direction.DOWN) {
             if(be.sharedStorage == null) SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(be.getLevel(), be.getBlockPos());
             return be.exposedStorage;
+        } else if(side == null) {
+            return be.sharedStorage != null ? be.sharedStorage : be.defaultStorage;
         }
+
         return null;
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        RequestEnergyPacketC2S.send(getBlockPos());
+
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.info")
+                .withStyle(ChatFormatting.WHITE))
+                .forGoggles(tooltip);
+
+        int outputPerSecond = EnergyResultPacketS2C.getLastOutput() *
+                (20 / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt());
+        int outputPercentage = (int)((double)EnergyResultPacketS2C.getLastOutput() / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
+
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.output")
+                .withStyle(ChatFormatting.GRAY))
+                .forGoggles(tooltip);
+        SolarLang.builder().add(Component.literal(" ")
+                .append(SolarLang.formatEnergy(outputPerSecond)).append("⚡/s (" + outputPercentage + "%)")
+                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.stored")
+                .withStyle(ChatFormatting.GRAY))
+                .forGoggles(tooltip);
+        SolarLang.builder().add(Component.literal(" ")
+                .append(SolarLang.formatEnergy(EnergyResultPacketS2C.getLastEnergy())).append("⚡")
+                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.capacity").withStyle(ChatFormatting.GRAY))
+                .forGoggles(tooltip);
+        SolarLang.builder().add(Component.literal(" ")
+                .append(SolarLang.formatEnergy(EnergyResultPacketS2C.getLastCapacity())).append("⚡")
+                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+
+        return true;
     }
 
     // region Energy Storage
@@ -120,7 +173,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
 
     public void setSharedEnergyStorage(SolarPanelSharedEnergyStorage sharedStorage) {
         this.sharedStorage = sharedStorage;
-        if(SharedConstants.IS_RUNNING_IN_IDE) notifyUpdate(); // it only needs to update for the debug renderer
     }
 
     public int getEnergyStored() {
@@ -154,7 +206,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         tag.putInt("NextUpdate", nextUpdate);
         tag.putInt("LastRedstoneOutput", lastRedstoneOutput);
         tag.putInt("Energy", energy);
-        if(SharedConstants.IS_RUNNING_IN_IDE) tag.putInt("SharedHash", sharedStorage != null && sharedStorage.getPanels() > 1 ? sharedStorage.hashCode() : -1);
     }
 
     @Override
@@ -165,6 +216,5 @@ public class SolarPanelBlockEntity extends SmartBlockEntity {
         this.nextUpdate = tag.getInt("NextUpdate");
         this.lastRedstoneOutput = tag.getInt("LastRedstoneOutput");
         this.energy = tag.getInt("Energy");
-        if(SharedConstants.IS_RUNNING_IN_IDE) this.sharedHash = tag.getInt("SharedHash");
     }
 }

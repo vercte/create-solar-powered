@@ -1,4 +1,8 @@
 {
   "block.createsolar.solar_panel": "Solar Panel",
+  "createsolar.tooltip.energy.capacity": "Capacity:",
+  "createsolar.tooltip.energy.stored": "Stored Energy:",
+  "createsolar.tooltip.solar_panel.info": "Solar Panel Info:",
+  "createsolar.tooltip.solar_panel.output": "Current Output:",
   "itemGroup.createsolar.base": "Create: Solar Powered"
 }

@@ -23,6 +23,10 @@ public class SolarDatagen {
     public static void gatherExtraLang(final GatherDataEvent event) {
         CreateSolarPowered.registrate().addDataGenerator(ProviderType.LANG, p -> {
             p.add(SolarCreativeTabs.BASE.get(), "Create: Solar Powered");
+            p.add("createsolar.tooltip.solar_panel.info", "Solar Panel Info:");
+            p.add("createsolar.tooltip.solar_panel.output", "Current Output:");
+            p.add("createsolar.tooltip.energy.stored", "Stored Energy:");
+            p.add("createsolar.tooltip.energy.capacity", "Capacity:");
         });
     }
 }

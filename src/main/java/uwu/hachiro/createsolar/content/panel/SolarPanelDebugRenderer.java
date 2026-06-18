@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class SolarPanelDebugRenderer implements BlockEntityRenderer<SolarPanelBlockEntity> {
     private final BlockEntityRendererProvider.Context context;
 

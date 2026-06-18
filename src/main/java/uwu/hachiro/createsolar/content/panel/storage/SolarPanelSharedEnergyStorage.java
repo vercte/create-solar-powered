@@ -9,30 +9,40 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
-    private final Set<WeakReference<SolarPanelBlockEntity>> storages;
+    private final Set<WeakReference<SolarPanelBlockEntity>> panels;
     private boolean locked;
 
     public SolarPanelSharedEnergyStorage() {
-        storages = new HashSet<>();
+        panels = new HashSet<>();
         locked = false;
     }
 
     public void combineInto(SolarPanelSharedEnergyStorage newStorage) {
-        getSet().forEach(be -> {
-            be.setSharedEnergyStorage(newStorage);
-            newStorage.storages.add(new WeakReference<>(be));
-        });
+        getSet().forEach(newStorage::assimilate);
 
-        storages.clear();
+        panels.clear();
         locked = true;
     }
 
-    public void assimilate(SolarPanelBlockEntity entity) {
-        assert entity.getLevel() != null;
+    public void assimilate(SolarPanelBlockEntity panel) {
+        assert panel.getLevel() != null;
         if(locked()) throw new UnsupportedOperationException("Cannot use locked SolarPanelSharedEnergyStorage");
 
-        entity.setSharedEnergyStorage(this);
-        storages.add(new WeakReference<>(entity));
+        for(SolarPanelBlockEntity be : getSet()) {
+            if(be == panel) return;
+        }
+
+        panel.setSharedEnergyStorage(this);
+        panels.add(new WeakReference<>(panel));
+    }
+
+    public void remove(SolarPanelBlockEntity panel) {
+        for(WeakReference<SolarPanelBlockEntity> reference : panels) {
+            if(panel == reference.get()) {
+                panels.remove(reference);
+                break;
+            }
+        }
     }
 
     private boolean locked() {
@@ -40,7 +50,7 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     }
 
     public int getPanels() {
-        return storages.size();
+        return getSet().size();
     }
 
     @Override
@@ -77,13 +87,13 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     private Set<SolarPanelBlockEntity> getSet() {
         Set<WeakReference<SolarPanelBlockEntity>> toRemove = new HashSet<>();
         Set<SolarPanelBlockEntity> output = new HashSet<>();
-        for(WeakReference<SolarPanelBlockEntity> weakReference : storages) {
+        for(WeakReference<SolarPanelBlockEntity> weakReference : panels) {
             if(weakReference.get() != null) {
                 output.add(weakReference.get());
             } else toRemove.add(weakReference);
         }
 
-        toRemove.forEach(storages::remove);
+        toRemove.forEach(panels::remove);
 
         return output;
     }
