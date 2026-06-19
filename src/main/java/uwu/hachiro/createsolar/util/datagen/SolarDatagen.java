@@ -31,11 +31,9 @@ public class SolarDatagen {
         CreateSolarPowered.registrate().addDataGenerator(ProviderType.LANG, p -> {
             p.add(SolarCreativeTabs.BASE.get(), "Create: Solar Powered");
             p.add("createsolar.tooltip.solar_panel.info", "Solar Panel Info:");
-            p.add("createsolar.tooltip.solar_panel.obstructed", "Not enough sunlight");
-            p.add("createsolar.tooltip.energy.flowing_down", "↓ Energy flows Downward");
-            p.add("createsolar.tooltip.energy.output", "Current Output:");
-            p.add("createsolar.tooltip.energy.stored", "Stored Energy:");
-            p.add("createsolar.tooltip.energy.capacity", "Capacity:");
+            p.add("createsolar.tooltip.solar_panel.efficiency", "Solar Power Efficiency:");
+            p.add("createsolar.tooltip.solar_panel.generated", "Energy Generated:");
+            p.add("createsolar.tooltip.solar_panel.postamble", " at current sun strength");
         });
     }
 }

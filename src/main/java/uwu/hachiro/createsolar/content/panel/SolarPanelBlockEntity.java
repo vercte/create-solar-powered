@@ -10,23 +10,20 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelDefaultEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelExposedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
-import uwu.hachiro.createsolar.network.packet.RequestEnergyPacketC2S;
-import uwu.hachiro.createsolar.network.packet.EnergyResultPacketS2C;
 import uwu.hachiro.createsolar.util.SolarLang;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static uwu.hachiro.createsolar.content.panel.SolarPanelBlock.ACTIVE;
@@ -38,8 +35,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     private boolean active;
     private int energy;
     private int nextUpdate;
-    private int lastOutput;
-    private boolean outputtingBelow;
     private int lastRedstoneOutput;
 
     public int sharedHash = -1;
@@ -74,8 +69,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         boolean nowActive = output > 0;
         if (active != nowActive) setActive(nowActive);
 
-        lastOutput = output;
-
         int redstoneOutput = (int)(
                 Mth.clamp(0, (double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get(), 1) * 15
         );
@@ -85,12 +78,10 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
             level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
 
-        outputtingBelow = false;
         IEnergyStorage energyCapability = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().below(), Direction.DOWN);
         if(energyCapability != null && energyCapability.canReceive()) {
             int recieved = energyCapability.receiveEnergy(output, false);
             output -= recieved;
-            if(recieved > 0) outputtingBelow = true;
         }
 
         addEnergy(output);
@@ -122,12 +113,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         notifyUpdate();
     }
 
-    public boolean isOutputtingBelow() { return outputtingBelow; }
-
-    public int getLastOutput() {
-        return lastOutput;
-    }
-
     public int getRedstoneOutput() {
         return lastRedstoneOutput;
     }
@@ -146,51 +131,26 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        RequestEnergyPacketC2S.send(getBlockPos());
-
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.info")
                 .withStyle(ChatFormatting.WHITE))
                 .forGoggles(tooltip);
 
-        boolean obstructed = EnergyResultPacketS2C.getLastOutput() == 0 && (!level.canSeeSky(getBlockPos()) || !(calculateOutput() > 0));
-        if(obstructed)
-            SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.obstructed")
-                            .withStyle(ChatFormatting.RED))
-                    .forGoggles(tooltip);
-
-        if(!obstructed && EnergyResultPacketS2C.isOutputtingBelow()) {
-            SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.flowing_down")
-                    .withStyle(ChatFormatting.YELLOW))
-                    .forGoggles(tooltip);
-        }
-
-        int outputPerSecond = EnergyResultPacketS2C.getLastOutput() *
-                (20 / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt());
-        int outputPercentage = (int)((double)EnergyResultPacketS2C.getLastOutput() / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
-
-        if(!obstructed) {
-            SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.output")
-                    .withStyle(ChatFormatting.GRAY))
-                    .forGoggles(tooltip);
-            SolarLang.builder().add(Component.literal(" ")
-                    .append(SolarLang.formatEnergy(outputPerSecond)).append("⚡/s (" + outputPercentage + "%)")
-                    .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
-        }
-
-        if(!obstructed && EnergyResultPacketS2C.isOutputtingBelow()) return true;
-
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.stored")
-                .withStyle(ChatFormatting.GRAY))
+        int output = calculateOutput();
+        int efficiency = (int)((double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.efficiency").withStyle(ChatFormatting.GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(" ")
-                .append(SolarLang.formatEnergy(EnergyResultPacketS2C.getLastEnergy())).append("⚡")
-                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
-
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.energy.capacity").withStyle(ChatFormatting.GRAY))
+        SolarLang.builder().add(Component.literal(efficiency + "% ☀").withStyle(ChatFormatting.YELLOW))
+                .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(" ")
-                .append(SolarLang.formatEnergy(EnergyResultPacketS2C.getLastCapacity())).append("⚡")
-                .withStyle(ChatFormatting.AQUA)).forGoggles(tooltip);
+
+        double perTick = (double)output / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt();
+        DecimalFormat format = new DecimalFormat("0.00");
+        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.generated")
+                        .withStyle(ChatFormatting.GRAY))
+                .forGoggles(tooltip);
+        SolarLang.builder().add(Component.literal(format.format(perTick) + "⚡/t").withStyle(ChatFormatting.AQUA))
+                .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
+                .forGoggles(tooltip);
 
         return true;
     }

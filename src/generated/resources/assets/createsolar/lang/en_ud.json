@@ -1,10 +1,8 @@
 {
   "block.createsolar.solar_panel": "ןǝuɐԀ ɹɐןoS",
-  "createsolar.tooltip.energy.capacity": ":ʎʇıɔɐdɐƆ",
-  "createsolar.tooltip.energy.flowing_down": "pɹɐʍuʍoᗡ sʍoןɟ ʎbɹǝuƎ ↓",
-  "createsolar.tooltip.energy.output": ":ʇndʇnO ʇuǝɹɹnƆ",
-  "createsolar.tooltip.energy.stored": ":ʎbɹǝuƎ pǝɹoʇS",
+  "createsolar.tooltip.solar_panel.efficiency": ":ʎɔuǝıɔıɟɟƎ ɹǝʍoԀ ɹɐןoS",
+  "createsolar.tooltip.solar_panel.generated": ":pǝʇɐɹǝuǝ⅁ ʎbɹǝuƎ",
   "createsolar.tooltip.solar_panel.info": ":oɟuI ןǝuɐԀ ɹɐןoS",
-  "createsolar.tooltip.solar_panel.obstructed": "ʇɥbıןuns ɥbnouǝ ʇoN",
+  "createsolar.tooltip.solar_panel.postamble": "ɥʇbuǝɹʇs uns ʇuǝɹɹnɔ ʇɐ ",
   "itemGroup.createsolar.base": "pǝɹǝʍoԀ ɹɐןoS :ǝʇɐǝɹƆ"
 }

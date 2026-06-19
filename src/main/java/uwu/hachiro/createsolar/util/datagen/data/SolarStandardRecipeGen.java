@@ -23,7 +23,7 @@ public class SolarStandardRecipeGen extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput output) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SolarBlocks.SOLAR_PANEL, 2)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SolarBlocks.SOLAR_PANEL, 4)
                 .define('a', Tags.Items.GEMS_AMETHYST)
                 .define('d', Items.DAYLIGHT_DETECTOR)
                 .define('g', CommonMetal.GOLD.plates)

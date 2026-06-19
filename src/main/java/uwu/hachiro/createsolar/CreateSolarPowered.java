@@ -16,7 +16,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
-import uwu.hachiro.createsolar.network.SolarPackets;
 import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 
 @Mod(CreateSolarPowered.ID)
@@ -42,7 +41,6 @@ public class CreateSolarPowered {
         SolarParticles.loadAndRegister(bus);
 
         bus.addListener(this::registerCapabilities);
-        bus.addListener(SolarPackets::registerPayloadHandlers);
         bus.addListener(SolarDatagen::gatherData);
         bus.addListener(EventPriority.HIGHEST, SolarDatagen::gatherExtraLang);
 
