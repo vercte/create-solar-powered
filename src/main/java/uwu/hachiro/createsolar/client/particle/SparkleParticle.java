@@ -10,24 +10,28 @@ import org.jetbrains.annotations.Nullable;
 
 public class SparkleParticle extends GlowParticle {
     private final float initialQuadSize;
-    private final float rotSpeed;
+    private final float rotDir;
 
     protected SparkleParticle(ClientLevel level, double p_172137_, double p_172138_, double p_172139_, double p_172140_, double p_172141_, double p_172142_, SpriteSet p_172143_) {
         super(level, p_172137_, p_172138_, p_172139_, p_172140_, p_172141_, p_172142_, p_172143_);
         speedUpWhenYMotionIsBlocked = false;
-        quadSize *= 1.5f;
+        quadSize *= 1.2f;
         initialQuadSize = quadSize;
-        rotSpeed = level.random.nextBoolean() ? -1 : 1;
+        rotDir = level.random.nextBoolean() ? -1 : 1;
     }
 
     @Override
     public void render(@NotNull VertexConsumer consumer, @NotNull Camera camera, float dt) {
         super.render(consumer, camera, dt);
         this.oRoll = roll;
-        this.roll += (float)Math.toRadians(rotSpeed);
+        this.roll += (float)Math.toRadians(rotDir / 2);
 
         double expectancy = (age + dt) / (double)lifetime;
-        quadSize = initialQuadSize * (float)Math.sin(expectancy * Math.PI);
+        double halfPi = Math.PI / 2;
+        float size = (float)Math.sin(halfPi + expectancy * halfPi);
+        quadSize = initialQuadSize * size;
+
+        yd = size / 8;
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {

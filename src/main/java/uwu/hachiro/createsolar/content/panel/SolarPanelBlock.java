@@ -4,7 +4,6 @@ import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
+import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.SolarParticles;
 import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
@@ -79,8 +79,18 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     @Override
     public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, RandomSource random) {
         if(!state.getValue(ACTIVE)) return;
-        if (random.nextInt(4) == 0) {
-            int amount = random.nextInt(2);
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if(!(be instanceof SolarPanelBlockEntity panel)) return;
+
+        int output = panel.calculateOutput();
+        double efficiency = (double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt();
+
+        if(efficiency < 0.5) return;
+
+        double chance = efficiency > 0.9 ? 0.2 : Math.pow(efficiency, 2) / 8;
+        if (random.nextDouble() < chance) {
+            int amount = random.nextInt(efficiency > 0.9 ? 3 : 2);
             for(int i = 0; i < amount; i++) {
                 double xd = (14d/16) - random.nextDouble() * (12d/16);
                 double zd = (14d/16) - random.nextDouble() * (12d/16);
@@ -89,9 +99,9 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
                         pos.getX() + xd,
                         pos.getY() + 0.6,
                         pos.getZ() + zd,
-                        random.nextGaussian() * 0.005,
-                        random.nextGaussian() * 0.005,
-                        random.nextGaussian() * 0.005
+                        0,
+                        0,
+                        0
                 );
             }
         }

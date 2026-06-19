@@ -87,7 +87,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         addEnergy(output);
     }
 
-    private int calculateOutput() {
+    public int calculateOutput() {
         assert level != null;
 
         BlockPos pos = this.getBlockPos();
