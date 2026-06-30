@@ -6,13 +6,14 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarBlocks;
 
 public class SolarPonderIndex implements PonderPlugin {
 
     @Override
-    public String getModId() {
+    public @NotNull String getModId() {
         return CreateSolarPowered.ID;
     }
 

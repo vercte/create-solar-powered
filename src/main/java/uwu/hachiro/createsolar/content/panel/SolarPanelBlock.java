@@ -83,7 +83,7 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
     private static final double PARTICLE_Y_OFFSET = 0.6;
 
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, RandomSource random) {
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if(!state.getValue(ACTIVE)) return;
 
         BlockEntity be = level.getBlockEntity(pos);

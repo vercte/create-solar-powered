@@ -6,12 +6,6 @@ public class SolarConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     static {
-        BUILDER.comment("The config version. DO NOT CHANGE!\n ...Unless you really, really want to, I guess.");
-    }
-
-    private static final ModConfigSpec.IntValue CONFIG_VERSION = BUILDER.defineInRange("version", 1, 1, 1);
-
-    static {
         BUILDER.comment("## Solar Panel Config");
         BUILDER.push("solar_panel");
     }

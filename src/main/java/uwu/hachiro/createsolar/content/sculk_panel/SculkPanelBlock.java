@@ -87,7 +87,7 @@ public class SculkPanelBlock extends Block implements IWrenchable, IBE<SculkPane
     }
 
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, RandomSource random) {
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!state.getValue(ACTIVE)) return;
 
         if (random.nextFloat() < 0.15f) {

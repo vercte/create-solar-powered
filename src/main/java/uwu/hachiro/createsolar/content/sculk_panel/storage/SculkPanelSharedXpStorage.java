@@ -1,6 +1,5 @@
 package uwu.hachiro.createsolar.content.sculk_panel.storage;
 
-import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlock;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlockEntity;
 
 import java.lang.ref.WeakReference;

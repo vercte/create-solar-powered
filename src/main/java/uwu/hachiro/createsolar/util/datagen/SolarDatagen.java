@@ -27,6 +27,7 @@ public class SolarDatagen {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void gatherExtraLang(final GatherDataEvent event) {
         CreateSolarPowered.registrate().addDataGenerator(ProviderType.LANG, p -> {
             p.add(SolarCreativeTabs.BASE.get(), "Create: Solar Powered");
