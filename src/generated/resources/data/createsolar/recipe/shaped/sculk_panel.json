@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "d": {
+      "item": "minecraft:daylight_detector"
+    },
+    "e": {
+      "item": "minecraft:echo_shard"
+    },
+    "s": {
+      "item": "minecraft:sculk"
+    },
+    "t": {
+      "item": "create:electron_tube"
+    }
+  },
+  "pattern": [
+    "ses",
+    " d ",
+    " t "
+  ],
+  "result": {
+    "count": 4,
+    "id": "createsolar:sculk_panel"
+  }
+}
