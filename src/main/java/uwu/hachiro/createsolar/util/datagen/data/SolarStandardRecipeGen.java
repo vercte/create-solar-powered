@@ -34,5 +34,17 @@ public class SolarStandardRecipeGen extends RecipeProvider {
                 .unlockedBy("has_amethyst", has(Tags.Items.GEMS_AMETHYST))
                 .unlockedBy("has_gold_plate", has(CommonMetal.GOLD.plates))
                 .save(output, CreateSolarPowered.at("shaped/solar_panel"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, SolarBlocks.SCULK_PANEL, 4)
+                .define('s', Items.SCULK)
+                .define('d', Items.DAYLIGHT_DETECTOR)
+                .define('e', Items.ECHO_SHARD)
+                .define('t', AllItems.ELECTRON_TUBE)
+                .pattern("ses")
+                .pattern(" d ")
+                .pattern(" t ")
+                .unlockedBy("has_sculk", has(Items.SCULK))
+                .unlockedBy("has_echo_shard", has(Items.ECHO_SHARD))
+                .save(output, CreateSolarPowered.at("shaped/sculk_panel"));
     }
 }

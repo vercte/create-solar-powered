@@ -34,6 +34,18 @@ public class SolarDatagen {
             p.add("createsolar.tooltip.solar_panel.efficiency", "Solar Power Efficiency:");
             p.add("createsolar.tooltip.solar_panel.generated", "Energy Generated:");
             p.add("createsolar.tooltip.solar_panel.postamble", " at current sun strength");
+            p.add("createsolar.tooltip.sculk_panel.info", "Sculk Panel Info:");
+            p.add("createsolar.tooltip.sculk_panel.efficiency", "Lunar Power Efficiency:");
+            p.add("createsolar.tooltip.sculk_panel.moon_postamble", " at current moon strength");
+            p.add("createsolar.tooltip.sculk_panel.generated", "Experience Generated:");
+            p.add("createsolar.tooltip.sculk_panel.postamble", " at current moon strength");
+            p.add("createsolar.tooltip.sculk_panel.stored", "Stored XP: %s / %s (%s panels)");
+            p.add("createsolar.ponder.solar_panel.header", "Solar Panel");
+            p.add("createsolar.ponder.sculk_panel.header", "Sculk Panel");
+            p.add("createsolar.ponder.solar_panel.intro", "Generating Energy from Sunlight");
+            p.add("createsolar.ponder.solar_panel.output", "Extracting Energy");
+            p.add("createsolar.ponder.sculk_panel.intro", "Generating Experience from Moonlight");
+            p.add("createsolar.ponder.sculk_panel.collection", "Collecting Experience");
         });
     }
 }

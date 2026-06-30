@@ -37,12 +37,7 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     }
 
     public void remove(SolarPanelBlockEntity panel) {
-        for(WeakReference<SolarPanelBlockEntity> reference : panels) {
-            if(panel == reference.get()) {
-                panels.remove(reference);
-                break;
-            }
-        }
+        panels.removeIf(reference -> panel == reference.get());
     }
 
     private boolean locked() {
@@ -85,16 +80,12 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
     }
 
     private Set<SolarPanelBlockEntity> getSet() {
-        Set<WeakReference<SolarPanelBlockEntity>> toRemove = new HashSet<>();
         Set<SolarPanelBlockEntity> output = new HashSet<>();
-        for(WeakReference<SolarPanelBlockEntity> weakReference : panels) {
-            if(weakReference.get() != null) {
-                output.add(weakReference.get());
-            } else toRemove.add(weakReference);
-        }
-
-        toRemove.forEach(panels::remove);
-
+        panels.removeIf(ref -> {
+            SolarPanelBlockEntity be = ref.get();
+            if (be != null) output.add(be);
+            return be == null;
+        });
         return output;
     }
 

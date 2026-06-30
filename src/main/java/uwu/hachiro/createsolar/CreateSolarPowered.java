@@ -22,8 +22,6 @@ import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 public class CreateSolarPowered {
     public static final String ID = "createsolar";
 
-    private static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
-
     private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>)null)
             .setTooltipModifierFactory(item ->
@@ -56,8 +54,6 @@ public class CreateSolarPowered {
     }
 
     public static CreateRegistrate registrate() {
-        if (!STACK_WALKER.getCallerClass().getPackageName().startsWith("uwu.hachiro.createsolar"))
-            throw new UnsupportedOperationException("Other mods are not permitted to use Create Solar Powered's registrate instance.");
         return REGISTRATE;
     }
 

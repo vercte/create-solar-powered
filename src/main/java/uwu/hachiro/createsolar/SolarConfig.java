@@ -42,7 +42,7 @@ public class SolarConfig {
             .defineInRange("min_y", -64, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     public static final ModConfigSpec.IntValue SOLAR_PANEL_ALTITUDE_MAX_Y = BUILDER
-            .comment("Minimum Y level for altitude calculation")
+            .comment("Maximum Y level for altitude calculation")
             .defineInRange("max_y", 61, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     public static final ModConfigSpec.DoubleValue SOLAR_PANEL_ALTITUDE_MIN_FACTOR = BUILDER
