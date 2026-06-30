@@ -74,5 +74,29 @@ public class SolarConfig {
             .comment("Output multiplier at temperature_max_value.")
             .defineInRange("temperature_max_factor", 1.0, 0.0, 1.0);
 
+    static {
+        BUILDER.pop();
+        BUILDER.pop();
+
+        BUILDER.comment("## Growth Lamp Config");
+        BUILDER.push("growth_lamp");
+    }
+
+    public static final ModConfigSpec.IntValue GROWTH_LAMP_MAX_ENERGY_STORED = BUILDER
+            .comment("Internal energy buffer capacity (FE).")
+            .defineInRange("max_energy_stored", 1000, 1, Integer.MAX_VALUE);
+
+    public static final ModConfigSpec.IntValue GROWTH_LAMP_MIN_ACTIVATION_ENERGY = BUILDER
+            .comment("Minimum FE required to activate the lamp.")
+            .defineInRange("min_activation_energy", 125, 1, Integer.MAX_VALUE);
+
+    public static final ModConfigSpec.IntValue GROWTH_LAMP_CONSUMPTION = BUILDER
+            .comment("FE consumed per tick while active.")
+            .defineInRange("consumption", 3, 0, Integer.MAX_VALUE);
+
+    public static final ModConfigSpec.IntValue GROWTH_LAMP_INTERVAL = BUILDER
+            .comment("Ticks between bonemeal operations.")
+            .defineInRange("interval", 40, 1, Integer.MAX_VALUE);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

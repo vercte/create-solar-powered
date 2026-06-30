@@ -106,6 +106,6 @@ public class SolarPanelSharedEnergyStorage implements IEnergyStorage {
 
     @Override
     public String toString() {
-        return "⚡&" + Integer.toHexString(hashCode());
+        return "\u26A1&" + Integer.toHexString(hashCode());
     }
 }

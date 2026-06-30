@@ -47,6 +47,10 @@ public class SolarDatagen {
             p.add("createsolar.ponder.solar_panel.output", "Extracting Energy");
             p.add("createsolar.ponder.sculk_panel.intro", "Generating Experience from Moonlight");
             p.add("createsolar.ponder.sculk_panel.collection", "Collecting Experience");
+            p.add("createsolar.tooltip.growth_lamp.info", "Growth Lamp Info:");
+            p.add("createsolar.tooltip.growth_lamp.active", "Active");
+            p.add("createsolar.tooltip.growth_lamp.inactive", "Inactive");
+            p.add("createsolar.tooltip.growth_lamp.energy", "Energy: %s / %s FE");
         });
     }
 }

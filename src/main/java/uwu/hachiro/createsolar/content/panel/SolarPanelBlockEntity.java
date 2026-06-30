@@ -138,7 +138,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         int efficiency = (int)((double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.efficiency").withStyle(ChatFormatting.GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(efficiency + "% ☀").withStyle(ChatFormatting.YELLOW))
+        SolarLang.builder().add(Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW))
                 .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
                 .forGoggles(tooltip);
 
@@ -146,7 +146,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.generated")
                         .withStyle(ChatFormatting.GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(ENERGY_FORMAT.format(perTick) + "⚡/t").withStyle(ChatFormatting.AQUA))
+        SolarLang.builder().add(Component.literal(ENERGY_FORMAT.format(perTick) + "\u26A1/t").withStyle(ChatFormatting.AQUA))
                 .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
                 .forGoggles(tooltip);
 

@@ -25,5 +25,11 @@
   "createsolar.tooltip.solar_panel.generated": "Energy Generated:",
   "createsolar.tooltip.solar_panel.info": "Solar Panel Info:",
   "createsolar.tooltip.solar_panel.postamble": " at current sun strength",
+  "createsolar.tooltip.growth_lamp.info": "Growth Lamp Info:",
+  "createsolar.tooltip.growth_lamp.active": "Active",
+  "createsolar.tooltip.growth_lamp.inactive": "Inactive",
+  "createsolar.tooltip.growth_lamp.energy": "Energy: %s / %s FE",
+  "createsolar.tooltip.growth_lamp.cooldown": "Cooldown: %s ticks",
+  "block.createsolar.growth_lamp": "Growth Lamp",
   "itemGroup.createsolar.base": "Create: Solar Powered"
 }
