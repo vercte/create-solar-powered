@@ -37,7 +37,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     private int nextUpdate;
     private int lastRedstoneOutput;
 
-    public int sharedHash = -1;
+    private static final DecimalFormat ENERGY_FORMAT = new DecimalFormat("0.00");
 
     public SolarPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -70,7 +70,7 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         if (active != nowActive) setActive(nowActive);
 
         int redstoneOutput = (int)(
-                Mth.clamp(0, (double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get(), 1) * 15
+                Mth.clamp((double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get(), 0, 1) * 15
         );
         if(redstoneOutput != lastRedstoneOutput) {
             lastRedstoneOutput = redstoneOutput;
@@ -78,10 +78,10 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
             level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
 
-        IEnergyStorage energyCapability = level.getCapability(Capabilities.EnergyStorage.BLOCK, getBlockPos().below(), Direction.DOWN);
+        IEnergyStorage energyCapability = level.getCapability(Capabilities.EnergyStorage.BLOCK, worldPosition.below(), Direction.DOWN);
         if(energyCapability != null && energyCapability.canReceive()) {
-            int recieved = energyCapability.receiveEnergy(output, false);
-            output -= recieved;
+            int received = energyCapability.receiveEnergy(output, false);
+            output -= received;
         }
 
         addEnergy(output);
@@ -90,15 +90,14 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     public int calculateOutput() {
         assert level != null;
 
-        BlockPos pos = this.getBlockPos();
-        if (!level.canSeeSky(pos)) return 0;
+        if (!level.canSeeSky(worldPosition)) return 0;
 
         double sunFactor = SolarPanelCalculations.getSunFactor(level);
         if (sunFactor == 0) return 0;
 
         double weatherFactor = SolarPanelCalculations.getWeatherFactor(level);
-        double altitudeFactor = SolarPanelCalculations.getAltitudeFactor(pos.getY());
-        double temperatureFactor = SolarPanelCalculations.getTemperatureFactor(level, pos);
+        double altitudeFactor = SolarPanelCalculations.getAltitudeFactor(worldPosition.getY());
+        double temperatureFactor = SolarPanelCalculations.getTemperatureFactor(level, worldPosition);
 
         double finalFactor = sunFactor * weatherFactor * altitudeFactor * temperatureFactor;
         return (int)(SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get() * finalFactor);
@@ -139,16 +138,15 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         int efficiency = (int)((double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.efficiency").withStyle(ChatFormatting.GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(efficiency + "% ☀").withStyle(ChatFormatting.YELLOW))
+        SolarLang.builder().add(Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW))
                 .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
                 .forGoggles(tooltip);
 
         double perTick = (double)output / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt();
-        DecimalFormat format = new DecimalFormat("0.00");
         SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.generated")
                         .withStyle(ChatFormatting.GRAY))
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(format.format(perTick) + "⚡/t").withStyle(ChatFormatting.AQUA))
+        SolarLang.builder().add(Component.literal(ENERGY_FORMAT.format(perTick) + "\u26A1/t").withStyle(ChatFormatting.AQUA))
                 .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
                 .forGoggles(tooltip);
 

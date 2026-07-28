@@ -76,8 +76,14 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
         builder.add(ACTIVE);
     }
 
+    private static final double PARTICLE_SPAWN_CHANCE_HIGH = 0.2;
+    private static final double PARTICLE_SPAWN_CHANCE_BASE = 8.0;
+    private static final double PARTICLE_X_OFFSET = 14.0 / 16.0;
+    private static final double PARTICLE_X_RANGE = 12.0 / 16.0;
+    private static final double PARTICLE_Y_OFFSET = 0.6;
+
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, RandomSource random) {
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if(!state.getValue(ACTIVE)) return;
 
         BlockEntity be = level.getBlockEntity(pos);
@@ -88,16 +94,17 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
 
         if(efficiency < 0.5) return;
 
-        double chance = efficiency > 0.9 ? 0.2 : Math.pow(efficiency, 2) / 8;
+        boolean highEfficiency = efficiency > 0.9;
+        double chance = highEfficiency ? PARTICLE_SPAWN_CHANCE_HIGH : Math.pow(efficiency, 2) / PARTICLE_SPAWN_CHANCE_BASE;
         if (random.nextDouble() < chance) {
-            int amount = random.nextInt(efficiency > 0.9 ? 3 : 2);
+            int amount = random.nextInt(highEfficiency ? 3 : 2);
             for(int i = 0; i < amount; i++) {
-                double xd = (14d/16) - random.nextDouble() * (12d/16);
-                double zd = (14d/16) - random.nextDouble() * (12d/16);
+                double xd = PARTICLE_X_OFFSET - random.nextDouble() * PARTICLE_X_RANGE;
+                double zd = PARTICLE_X_OFFSET - random.nextDouble() * PARTICLE_X_RANGE;
                 level.addParticle(
                         SolarParticles.SPARKLE.get(),
                         pos.getX() + xd,
-                        pos.getY() + 0.6,
+                        pos.getY() + PARTICLE_Y_OFFSET,
                         pos.getZ() + zd,
                         0,
                         0,

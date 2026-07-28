@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "createsolar:block/growth_lamp"
+    },
+    "active=true": {
+      "model": "createsolar:block/growth_lamp_active"
+    }
+  }
+}

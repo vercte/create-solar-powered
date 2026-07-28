@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "createsolar:block/sculk_panel"
+    },
+    "active=true": {
+      "model": "createsolar:block/sculk_panel_active"
+    }
+  }
+}

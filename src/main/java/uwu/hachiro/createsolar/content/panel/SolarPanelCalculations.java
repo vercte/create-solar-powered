@@ -47,11 +47,13 @@ public class SolarPanelCalculations {
         double maxFactor = SolarConfig.SOLAR_PANEL_ALTITUDE_MAX_FACTOR.get();
         double distFactor = maxFactor - minFactor;
 
-        int clamped = Mth.clamp(minY, altitude, maxY);
+        if (distY == 0) return minFactor;
+
+        int clamped = Mth.clamp(altitude, minY, maxY);
 
         return Mth.clamp(
+                minFactor + distFactor * (double)(clamped - minY) / distY,
                 minFactor,
-                minFactor + distFactor * (clamped - minY) / distY,
                 maxFactor
         );
     }

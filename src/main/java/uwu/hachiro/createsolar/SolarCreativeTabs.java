@@ -32,6 +32,8 @@ public class SolarCreativeTabs {
 
     private static void displayItems(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
         output.accept(SolarBlocks.SOLAR_PANEL);
+        output.accept(SolarBlocks.SCULK_PANEL);
+        output.accept(SolarBlocks.GROWTH_LAMP);
     }
 
     public static void loadAndRegister(IEventBus bus) {

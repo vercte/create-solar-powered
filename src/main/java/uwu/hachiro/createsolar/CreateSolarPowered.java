@@ -15,14 +15,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
 import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 
 @Mod(CreateSolarPowered.ID)
 public class CreateSolarPowered {
     public static final String ID = "createsolar";
-
-    private static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
     private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>)null)
@@ -53,11 +52,14 @@ public class CreateSolarPowered {
                 SolarBlockEntities.SOLAR_PANEL.get(),
                 SolarPanelBlockEntity::getCapability
         );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                SolarBlockEntities.GROWTH_LAMP.get(),
+                GrowthLampBlockEntity::getCapability
+        );
     }
 
     public static CreateRegistrate registrate() {
-        if (!STACK_WALKER.getCallerClass().getPackageName().startsWith("uwu.hachiro.createsolar"))
-            throw new UnsupportedOperationException("Other mods are not permitted to use Create Solar Powered's registrate instance.");
         return REGISTRATE;
     }
 

@@ -1,8 +1,19 @@
 {
-  "block.createsolar.solar_panel": "ןǝuɐԀ ɹɐןoS",
-  "createsolar.tooltip.solar_panel.efficiency": ":ʎɔuǝıɔıɟɟƎ ɹǝʍoԀ ɹɐןoS",
-  "createsolar.tooltip.solar_panel.generated": ":pǝʇɐɹǝuǝ⅁ ʎbɹǝuƎ",
-  "createsolar.tooltip.solar_panel.info": ":oɟuI ןǝuɐԀ ɹɐןoS",
-  "createsolar.tooltip.solar_panel.postamble": "ɥʇbuǝɹʇs uns ʇuǝɹɹnɔ ʇɐ ",
-  "itemGroup.createsolar.base": "pǝɹǝʍoԀ ɹɐןoS :ǝʇɐǝɹƆ"
+  "block.createsolar.sculk_panel": "×ŸÇuÉÔ€ Êž×ŸnÉ”S",
+  "block.createsolar.solar_panel": "×ŸÇuÉÔ€ É¹É×ŸoS",
+  "createsolar.ponder.sculk_panel.header": "×ŸÇuÉÔ€ Êž×ŸnÉ”S",
+  "createsolar.ponder.sculk_panel.intro": "Ê‡É¥bÄ±×ŸuooW É¯oÉ¹ÉŸ ÇÉ”uÇÄ±É¹ÇdxÆŽ buÄ±Ê‡ÉÉ¹ÇuÇâ…",
+  "createsolar.ponder.solar_panel.header": "×ŸÇuÉÔ€ É¹É×ŸoS",
+  "createsolar.ponder.solar_panel.intro": "Ê‡É¥bÄ±×ŸunS É¯oÉ¹ÉŸ ÊŽbÉ¹ÇuÆŽ buÄ±Ê‡ÉÉ¹ÇuÇâ…",
+  "createsolar.tooltip.sculk_panel.efficiency": ":ÊŽÉ”uÇÄ±É”Ä±ÉŸÉŸÆŽ É¹ÇÊoÔ€ É¹Éunêž€",
+  "createsolar.tooltip.sculk_panel.generated": ":pÇÊ‡ÉÉ¹ÇuÇâ… ÇÉ”uÇÄ±É¹ÇdxÆŽ",
+  "createsolar.tooltip.sculk_panel.info": ":oÉŸuI ×ŸÇuÉÔ€ Êž×ŸnÉ”S",
+  "createsolar.tooltip.sculk_panel.moon_postamble": "É¥Ê‡buÇÉ¹Ê‡s uooÉ¯ Ê‡uÇÉ¹É¹nÉ” Ê‡É ",
+  "createsolar.tooltip.sculk_panel.postamble": "É¥Ê‡buÇÉ¹Ê‡s uooÉ¯ Ê‡uÇÉ¹É¹nÉ” Ê‡É ",
+  "createsolar.tooltip.sculk_panel.stored": ")s×ŸÇuÉd %s( %s / %s :Ô€X pÇÉ¹oÊ‡S",
+  "createsolar.tooltip.solar_panel.efficiency": ":ÊŽÉ”uÇÄ±É”Ä±ÉŸÉŸÆŽ É¹ÇÊoÔ€ É¹É×ŸoS",
+  "createsolar.tooltip.solar_panel.generated": ":pÇÊ‡ÉÉ¹ÇuÇâ… ÊŽbÉ¹ÇuÆŽ",
+  "createsolar.tooltip.solar_panel.info": ":oÉŸuI ×ŸÇuÉÔ€ É¹É×ŸoS",
+  "createsolar.tooltip.solar_panel.postamble": "É¥Ê‡buÇÉ¹Ê‡s uns Ê‡uÇÉ¹É¹nÉ” Ê‡É ",
+  "itemGroup.createsolar.base": "pÇÉ¹ÇÊoÔ€ É¹É×ŸoS :ÇÊ‡ÉÇÉ¹Æ†"
 }

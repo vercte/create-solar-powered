@@ -1,0 +1,23 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "top": "createsolar:block/sculk_panel_top",
+    "bottom": "createsolar:block/sculk_panel_bottom",
+    "side": "createsolar:block/sculk_panel_side_on",
+    "particle": "createsolar:block/sculk_panel_top"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 8, 16],
+      "faces": {
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bottom" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#top" },
+        "north": { "uv": [0, 0, 16, 8], "texture": "#side" },
+        "south": { "uv": [0, 0, 16, 8], "texture": "#side" },
+        "west":  { "uv": [0, 0, 16, 8], "texture": "#side" },
+        "east":  { "uv": [0, 0, 16, 8], "texture": "#side" }
+      }
+    }
+  ]
+}
