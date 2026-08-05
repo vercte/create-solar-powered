@@ -3,6 +3,7 @@ package uwu.hachiro.createsolar;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import uwu.hachiro.createsolar.content.panel.SolarPanelBlock;
@@ -48,13 +49,13 @@ public class SolarBlocks {
             .properties(p -> p
                     .mapColor(MapColor.COLOR_LIGHT_GREEN)
                     .strength(1.0F)
-                    .sound(SoundType.LANTERN)
                     .lightLevel(s -> s.getValue(GrowthLampBlock.ACTIVE) ? 15 : 0)
             )
             .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, s -> {
                 boolean active = s.getValue(GrowthLampBlock.ACTIVE);
                 String name = c.getName() + (active ? "_active" : "");
-                return p.models().getExistingFile(p.modLoc("block/" + name));
+                ResourceLocation texture = CreateSolarPowered.at("block/growth_lamp_" + (active ? "on" : "off"));
+                return p.models().cubeAll("block/" + name, texture);
             }))
             .simpleItem()
             .register();

@@ -14,8 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
@@ -23,7 +21,6 @@ import uwu.hachiro.createsolar.content.growth_lamp.storage.GrowthLampSharedEnerg
 
 public class GrowthLampBlock extends Block implements IWrenchable, IBE<GrowthLampBlockEntity> {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 
     public GrowthLampBlock(Properties properties) {
         super(properties);
@@ -56,12 +53,6 @@ public class GrowthLampBlock extends Block implements IWrenchable, IBE<GrowthLam
     protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(ACTIVE);
-    }
-
-    @Override
-    @NotNull
-    public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return SHAPE;
     }
 
     @Override

@@ -12,8 +12,8 @@ import uwu.hachiro.createsolar.client.particle.SparkleParticle;
 import uwu.hachiro.createsolar.ponder.SolarPonderIndex;
 
 @Mod(value = CreateSolarPowered.ID, dist = Dist.CLIENT)
-public class SolarClient {
-    public SolarClient(IEventBus bus) {
+public class CreateSolarPoweredClient {
+    public CreateSolarPoweredClient(IEventBus bus) {
         bus.addListener(this::clientInit);
         bus.addListener(this::registerParticleProviders);
     }
