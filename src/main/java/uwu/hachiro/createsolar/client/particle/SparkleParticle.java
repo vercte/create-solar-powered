@@ -31,7 +31,7 @@ public class SparkleParticle extends GlowParticle {
         float size = (float)Math.sin(halfPi + expectancy * halfPi);
         quadSize = initialQuadSize * size;
 
-        yd = size / 8;
+        yd = size / 16;
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
