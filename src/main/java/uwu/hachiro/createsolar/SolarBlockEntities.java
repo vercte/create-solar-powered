@@ -2,9 +2,9 @@ package uwu.hachiro.createsolar;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
-import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
-import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlockEntity;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
+import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 
 public class SolarBlockEntities {
     private static final CreateRegistrate REGISTRATE = CreateSolarPowered.registrate();
@@ -16,6 +16,7 @@ public class SolarBlockEntities {
     public static final BlockEntityEntry<SculkPanelBlockEntity> SCULK_PANEL = REGISTRATE.blockEntity("sculk_panel", SculkPanelBlockEntity::new)
             .validBlock(SolarBlocks.SCULK_PANEL)
             .register();
+
 
     public static final BlockEntityEntry<GrowthLampBlockEntity> GROWTH_LAMP = REGISTRATE.blockEntity("growth_lamp", GrowthLampBlockEntity::new)
             .validBlock(SolarBlocks.GROWTH_LAMP)

@@ -1,7 +1,6 @@
-package uwu.hachiro.createsolar.content.panel;
+package uwu.hachiro.createsolar.content.solar_panel;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -17,22 +16,20 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelDefaultEnergyStorage;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelExposedEnergyStorage;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStorage;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
+import uwu.hachiro.createsolar.content.panel.BasePanelBlockEntity;
+import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelDefaultEnergyStorage;
+import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelExposedEnergyStorage;
+import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelSharedEnergyStorage;
+import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelSharedEnergyStoragePropagator;
 import uwu.hachiro.createsolar.util.SolarLang;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-import static uwu.hachiro.createsolar.content.panel.SolarPanelBlock.ACTIVE;
-
-public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
+public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHaveGoggleInformation {
     private SolarPanelSharedEnergyStorage sharedStorage;
     private final SolarPanelExposedEnergyStorage exposedStorage;
     private final SolarPanelDefaultEnergyStorage defaultStorage;
-    private boolean active;
     private int energy;
     private int nextUpdate;
     private int lastRedstoneOutput;
@@ -45,7 +42,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
         this.sharedStorage = null;
         this.exposedStorage = new SolarPanelExposedEnergyStorage(this);
         this.defaultStorage = new SolarPanelDefaultEnergyStorage(this);
-        this.active = false;
         this.nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
         this.lastRedstoneOutput = 0;
     }
@@ -101,15 +97,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
 
         double finalFactor = sunFactor * weatherFactor * altitudeFactor * temperatureFactor;
         return (int)(SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get() * finalFactor);
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-
-        assert level != null;
-
-        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ACTIVE, active));
-        notifyUpdate();
     }
 
     public int getRedstoneOutput() {
@@ -190,7 +177,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
 
-        tag.putBoolean("Active", active);
         tag.putInt("NextUpdate", nextUpdate);
         tag.putInt("LastRedstoneOutput", lastRedstoneOutput);
         tag.putInt("Energy", energy);
@@ -200,7 +186,6 @@ public class SolarPanelBlockEntity extends SmartBlockEntity implements IHaveGogg
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
 
-        this.active = tag.getBoolean("Active");
         this.nextUpdate = tag.getInt("NextUpdate");
         this.lastRedstoneOutput = tag.getInt("LastRedstoneOutput");
         this.energy = tag.getInt("Energy");

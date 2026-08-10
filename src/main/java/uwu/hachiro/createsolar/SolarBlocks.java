@@ -2,14 +2,18 @@ package uwu.hachiro.createsolar;
 
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
-import uwu.hachiro.createsolar.content.panel.SolarPanelBlock;
-import uwu.hachiro.createsolar.content.panel.SolarPanelCTBehaviour;
-import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlock;
+import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlock;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlock;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelCTBehaviour;
+import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlock;
 
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
 
@@ -22,11 +26,7 @@ public class SolarBlocks {
                     .strength(1.0F)
                     .sound(SoundType.NETHERITE_BLOCK)
             )
-            .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, s -> {
-                boolean active = s.getValue(SolarPanelBlock.ACTIVE);
-                String name = c.getName() + (active ? "_active" : "");
-                return p.models().getExistingFile(p.modLoc("block/" + name));
-            }))
+            .blockstate(SolarBlocks::solarPanelModel)
             .onRegister(connectedTextures(() -> new SolarPanelCTBehaviour(SolarSpriteShifts.SOLAR_PANEL_TOP, SolarSpriteShifts.SOLAR_PANEL_BOTTOM)))
             .simpleItem()
             .register();
@@ -35,13 +35,9 @@ public class SolarBlocks {
             .properties(p -> p
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(1.0F)
-                    .sound(SoundType.SCULK)
+                    .sound(SoundType.BONE_BLOCK)
             )
-            .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, s -> {
-                boolean active = s.getValue(SculkPanelBlock.ACTIVE);
-                String name = c.getName() + (active ? "_active" : "");
-                return p.models().getExistingFile(p.modLoc("block/" + name));
-            }))
+            .blockstate(SolarBlocks::solarPanelModel)
             .simpleItem()
             .register();
 
@@ -59,6 +55,14 @@ public class SolarBlocks {
             }))
             .simpleItem()
             .register();
+
+    private static <T extends BasePanelBlock> void solarPanelModel(DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {
+        BlockStateGen.simpleBlock(c, p, s -> {
+            boolean active = s.getValue(BasePanelBlock.ACTIVE);
+            String name = c.getName() + (active ? "_active" : "");
+            return p.models().getExistingFile(p.modLoc("block/" + name));
+        });
+    }
 
     public static void loadAndRegister() {}
 }

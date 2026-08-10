@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.content.panel;
+package uwu.hachiro.createsolar.content.solar_panel;
 
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;

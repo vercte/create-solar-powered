@@ -16,7 +16,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
-import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
 import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 
 @Mod(CreateSolarPowered.ID)

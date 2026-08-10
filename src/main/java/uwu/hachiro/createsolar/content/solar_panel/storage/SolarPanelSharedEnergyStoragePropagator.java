@@ -1,9 +1,9 @@
-package uwu.hachiro.createsolar.content.panel.storage;
+package uwu.hachiro.createsolar.content.solar_panel.storage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
 
 import java.util.*;
 

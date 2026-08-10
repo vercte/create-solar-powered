@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.content.panel;
+package uwu.hachiro.createsolar.content.solar_panel;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;

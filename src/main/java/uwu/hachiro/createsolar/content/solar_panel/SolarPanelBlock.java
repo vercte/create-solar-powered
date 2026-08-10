@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.content.panel;
+package uwu.hachiro.createsolar.content.solar_panel;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -9,28 +9,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.SolarParticles;
-import uwu.hachiro.createsolar.content.panel.storage.SolarPanelSharedEnergyStoragePropagator;
+import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
+import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
-public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPanelBlockEntity> {
-    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 8, 16);
-
+public class SolarPanelBlock extends BasePanelBlock implements IWrenchable, IBE<SolarPanelBlockEntity> {
     public SolarPanelBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(ACTIVE, false));
     }
 
     @Override
@@ -70,12 +62,6 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
         return 0;
     }
 
-    @Override
-    protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(ACTIVE);
-    }
-
     private static final double PARTICLE_SPAWN_CHANCE_HIGH = 0.2;
     private static final double PARTICLE_SPAWN_CHANCE_BASE = 8.0;
     private static final double PARTICLE_X_OFFSET = 14.0 / 16.0;
@@ -112,12 +98,6 @@ public class SolarPanelBlock extends Block implements IWrenchable, IBE<SolarPane
                 );
             }
         }
-    }
-
-    @Override
-    @NotNull
-    public VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return SHAPE;
     }
 
     @Override

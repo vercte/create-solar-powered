@@ -1,8 +1,8 @@
-package uwu.hachiro.createsolar.content.panel.storage;
+package uwu.hachiro.createsolar.content.solar_panel.storage;
 
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import uwu.hachiro.createsolar.SolarConfig;
-import uwu.hachiro.createsolar.content.panel.SolarPanelBlockEntity;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
