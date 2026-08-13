@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.ponder;
+package uwu.hachiro.createsolar.client.ponder;
 
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -10,10 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarBlocks;
 
-public class SolarPonderIndex implements PonderPlugin {
-
+public class SolarPonderPlugin implements PonderPlugin {
     @Override
-    public @NotNull String getModId() {
+    @NotNull
+    public String getModId() {
         return CreateSolarPowered.ID;
     }
 

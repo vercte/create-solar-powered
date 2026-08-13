@@ -36,6 +36,7 @@ public class CreateSolarPowered {
         SolarBlocks.loadAndRegister();
         SolarBlockEntities.loadAndRegister();
         SolarCreativeTabs.loadAndRegister(bus);
+        SolarRecipeTypes.loadAndRegister(bus);
 
         SolarParticles.loadAndRegister(bus);
 

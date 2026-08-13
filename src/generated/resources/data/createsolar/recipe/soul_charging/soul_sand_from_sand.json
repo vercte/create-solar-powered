@@ -1,0 +1,13 @@
+{
+  "type": "createsolar:soul_charging",
+  "ingredients": [
+    {
+      "tag": "minecraft:sand"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:soul_sand"
+    }
+  ]
+}

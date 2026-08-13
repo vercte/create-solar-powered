@@ -1,7 +1,6 @@
 package uwu.hachiro.createsolar.content.solar_panel;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +16,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlockEntity;
+import uwu.hachiro.createsolar.content.panel.PanelCalculations;
 import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelDefaultEnergyStorage;
 import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelExposedEnergyStorage;
 import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelSharedEnergyStorage;
@@ -31,7 +31,6 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
     private final SolarPanelExposedEnergyStorage exposedStorage;
     private final SolarPanelDefaultEnergyStorage defaultStorage;
     private int energy;
-    private int nextUpdate;
     private int lastRedstoneOutput;
 
     private static final DecimalFormat ENERGY_FORMAT = new DecimalFormat("0.00");
@@ -42,20 +41,12 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
         this.sharedStorage = null;
         this.exposedStorage = new SolarPanelExposedEnergyStorage(this);
         this.defaultStorage = new SolarPanelDefaultEnergyStorage(this);
-        this.nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
         this.lastRedstoneOutput = 0;
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
+    public void onUpdate() {
         assert level != null;
-
-        if(level.isClientSide()) return;
-
-        if (nextUpdate-- > 0) return;
-        nextUpdate = SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
 
         if(sharedStorage == null) {
             SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(level, worldPosition);
@@ -91,16 +82,10 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
         double sunFactor = SolarPanelCalculations.getSunFactor(level);
         if (sunFactor == 0) return 0;
 
-        double weatherFactor = SolarPanelCalculations.getWeatherFactor(level);
-        double altitudeFactor = SolarPanelCalculations.getAltitudeFactor(worldPosition.getY());
-        double temperatureFactor = SolarPanelCalculations.getTemperatureFactor(level, worldPosition);
+        double weatherFactor = PanelCalculations.getWeatherFactor(level);
 
-        double finalFactor = sunFactor * weatherFactor * altitudeFactor * temperatureFactor;
+        double finalFactor = sunFactor * weatherFactor;
         return (int)(SolarConfig.SOLAR_PANEL_MAX_OUTPUT.get() * finalFactor);
-    }
-
-    public int getRedstoneOutput() {
-        return lastRedstoneOutput;
     }
 
     @Nullable
@@ -169,15 +154,9 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
     // endregion
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
-    }
-
-    @Override
     public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
 
-        tag.putInt("NextUpdate", nextUpdate);
         tag.putInt("LastRedstoneOutput", lastRedstoneOutput);
         tag.putInt("Energy", energy);
     }
@@ -186,8 +165,16 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
 
-        this.nextUpdate = tag.getInt("NextUpdate");
         this.lastRedstoneOutput = tag.getInt("LastRedstoneOutput");
         this.energy = tag.getInt("Energy");
+    }
+
+    public int getRedstoneOutput() {
+        return lastRedstoneOutput;
+    }
+
+    @Override
+    public int getUpdateInterval() {
+        return SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.get();
     }
 }

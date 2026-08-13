@@ -8,6 +8,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarCreativeTabs;
 import uwu.hachiro.createsolar.util.datagen.assets.SolarParticleDescriptionGen;
+import uwu.hachiro.createsolar.util.datagen.data.SolarRecipeProvider;
 import uwu.hachiro.createsolar.util.datagen.data.SolarStandardRecipeGen;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +24,7 @@ public class SolarDatagen {
         }
 
         if(event.includeServer()) {
+            SolarRecipeProvider.registerAllProcessing(event.getGenerator(), output, provider);
             event.addProvider(new SolarStandardRecipeGen(output, provider));
         }
     }

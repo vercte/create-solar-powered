@@ -1,4 +1,4 @@
-package uwu.hachiro.createsolar.ponder;
+package uwu.hachiro.createsolar.client.ponder;
 
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;

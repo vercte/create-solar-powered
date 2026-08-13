@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarParticles;
 import uwu.hachiro.createsolar.client.particle.SparkleParticle;
-import uwu.hachiro.createsolar.ponder.SolarPonderIndex;
+import uwu.hachiro.createsolar.client.ponder.SolarPonderPlugin;
 
 @Mod(value = CreateSolarPowered.ID, dist = Dist.CLIENT)
 public class CreateSolarPoweredClient {
@@ -23,6 +23,6 @@ public class CreateSolarPoweredClient {
     }
 
     public void clientInit(final FMLClientSetupEvent event) {
-        PonderIndex.addPlugin(new SolarPonderIndex());
+        PonderIndex.addPlugin(new SolarPonderPlugin());
     }
 }
