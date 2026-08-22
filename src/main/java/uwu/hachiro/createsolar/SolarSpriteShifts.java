@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.block.connected.CTSpriteShifter;
 public class SolarSpriteShifts {
     public static final CTSpriteShiftEntry SOLAR_PANEL_TOP = getCT("solar_panel_top");
     public static final CTSpriteShiftEntry SOLAR_PANEL_BOTTOM = getCT("solar_panel_bottom");
+    public static final CTSpriteShiftEntry SCULK_PANEL_TOP = getCT("sculk_panel_top");
 
 
     private static CTSpriteShiftEntry getCT(String blockTextureName) {

@@ -1,4 +1,5 @@
 {
+  "block.createsolar.charged_soul_sand": "Charged Soul Sand",
   "block.createsolar.growth_lamp": "Growth Lamp",
   "block.createsolar.sculk_panel": "Sculk Panel",
   "block.createsolar.solar_panel": "Solar Panel",
@@ -22,5 +23,6 @@
   "createsolar.tooltip.solar_panel.generated": "Energy Generated:",
   "createsolar.tooltip.solar_panel.info": "Solar Panel Info:",
   "createsolar.tooltip.solar_panel.postamble": " at current sun strength",
+  "item.createsolar.soul_shard": "Soul Shard",
   "itemGroup.createsolar.base": "Create: Solar Powered"
 }

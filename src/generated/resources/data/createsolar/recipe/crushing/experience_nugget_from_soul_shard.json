@@ -1,0 +1,17 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "createsolar:soul_shard"
+    }
+  ],
+  "results": [
+    {
+      "id": "create:experience_nugget"
+    },
+    {
+      "chance": 0.5,
+      "id": "create:experience_nugget"
+    }
+  ]
+}

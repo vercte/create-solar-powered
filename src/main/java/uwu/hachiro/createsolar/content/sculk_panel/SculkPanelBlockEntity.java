@@ -32,7 +32,13 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
     public void onUpdate() {
         assert level != null;
 
-        chargingProgress += getCycleValue();
+        double output = getCycleValue();
+
+        boolean nowActive = output > 0;
+        if (active != nowActive) setActive(nowActive);
+
+        chargingProgress += output;
+
         if(chargingProgress >= SolarConfig.SCULK_PANEL_CYCLE_REQUIREMENT.get()) {
             boolean charged = chargeBlockBelow();
 

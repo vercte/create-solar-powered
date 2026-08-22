@@ -22,6 +22,7 @@ public class SolarRecipeProvider extends RecipeProvider {
     }
 
     public static void registerAllProcessing(DataGenerator gen, PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        GENERATORS.add(new SolarCrushingRecipeGen(output, registries));
         GENERATORS.add(new SolarSoulChargingRecipeGen(output, registries));
 
         gen.addProvider(true, new DataProvider() {

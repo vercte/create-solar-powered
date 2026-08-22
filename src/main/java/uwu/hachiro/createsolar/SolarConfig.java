@@ -12,7 +12,7 @@ public class SolarConfig {
 
     public static final ModConfigSpec.IntValue SOLAR_PANEL_MAX_OUTPUT = BUILDER
             .comment("Maximum FE generated in one update interval at full sunlight.")
-            .defineInRange("max_output", 250, 1, Integer.MAX_VALUE);
+            .defineInRange("max_output", 300, 1, Integer.MAX_VALUE);
 
     public static final ModConfigSpec.IntValue SOLAR_PANEL_UPDATE_INTERVAL = BUILDER
             .comment("The number of ticks between energy updates.")

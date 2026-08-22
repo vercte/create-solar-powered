@@ -1,4 +1,5 @@
 {
+  "block.createsolar.charged_soul_sand": "puɐS ןnoS pǝbɹɐɥƆ",
   "block.createsolar.growth_lamp": "dɯɐꞀ ɥʇʍoɹ⅁",
   "block.createsolar.sculk_panel": "ןǝuɐԀ ʞןnɔS",
   "block.createsolar.solar_panel": "ןǝuɐԀ ɹɐןoS",
@@ -22,5 +23,6 @@
   "createsolar.tooltip.solar_panel.generated": ":pǝʇɐɹǝuǝ⅁ ʎbɹǝuƎ",
   "createsolar.tooltip.solar_panel.info": ":oɟuI ןǝuɐԀ ɹɐןoS",
   "createsolar.tooltip.solar_panel.postamble": "ɥʇbuǝɹʇs uns ʇuǝɹɹnɔ ʇɐ ",
+  "item.createsolar.soul_shard": "pɹɐɥS ןnoS",
   "itemGroup.createsolar.base": "pǝɹǝʍoԀ ɹɐןoS :ǝʇɐǝɹƆ"
 }

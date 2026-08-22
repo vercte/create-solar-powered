@@ -2,12 +2,12 @@
   "type": "createsolar:soul_charging",
   "ingredients": [
     {
-      "item": "minecraft:sculk"
+      "item": "minecraft:soul_sand"
     }
   ],
   "results": [
     {
-      "id": "minecraft:soul_sand"
+      "id": "createsolar:charged_soul_sand"
     }
   ]
 }

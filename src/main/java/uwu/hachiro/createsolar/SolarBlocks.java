@@ -6,13 +6,19 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoulSandBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlock;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlock;
-import uwu.hachiro.createsolar.content.solar_panel.SolarPanelCTBehaviour;
+import uwu.hachiro.createsolar.content.solar_panel.PanelCTBehaviour;
 import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlock;
 
 import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
@@ -27,7 +33,7 @@ public class SolarBlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
             )
             .blockstate(SolarBlocks::solarPanelModel)
-            .onRegister(connectedTextures(() -> new SolarPanelCTBehaviour(SolarSpriteShifts.SOLAR_PANEL_TOP, SolarSpriteShifts.SOLAR_PANEL_BOTTOM)))
+            .onRegister(connectedTextures(() -> new PanelCTBehaviour(SolarSpriteShifts.SOLAR_PANEL_TOP, SolarSpriteShifts.SOLAR_PANEL_BOTTOM)))
             .simpleItem()
             .register();
 
@@ -38,6 +44,7 @@ public class SolarBlocks {
                     .sound(SoundType.BONE_BLOCK)
             )
             .blockstate(SolarBlocks::solarPanelModel)
+            .onRegister(connectedTextures(() -> new PanelCTBehaviour(SolarSpriteShifts.SCULK_PANEL_TOP)))
             .simpleItem()
             .register();
 
@@ -53,6 +60,24 @@ public class SolarBlocks {
                 ResourceLocation texture = CreateSolarPowered.at("block/growth_lamp_" + (active ? "on" : "off"));
                 return p.models().cubeAll("block/" + name, texture);
             }))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<SoulSandBlock> CHARGED_SOUL_SAND = REGISTRATE.block("charged_soul_sand", SoulSandBlock::new)
+            .initialProperties(() -> Blocks.SOUL_SAND)
+            .tag(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.SOUL_SPEED_BLOCKS)
+            .loot((lt, b) -> {
+                lt.add(b,
+                        lt.createSilkTouchDispatchTable(b,
+                                lt.applyExplosionDecay(b,
+                                        LootItem.lootTableItem(SolarItems.SOUL_SHARD.get())
+                                            .apply(SetItemCountFunction.setCount(
+                                                        UniformGenerator.between(2, 3)
+                                                    ))
+                                )
+                        )
+                );
+            })
             .simpleItem()
             .register();
 

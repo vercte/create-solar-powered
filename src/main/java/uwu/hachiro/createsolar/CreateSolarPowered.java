@@ -33,6 +33,7 @@ public class CreateSolarPowered {
     public CreateSolarPowered(IEventBus bus, ModContainer modContainer) {
         REGISTRATE.registerEventListeners(bus);
 
+        SolarItems.loadAndRegister();
         SolarBlocks.loadAndRegister();
         SolarBlockEntities.loadAndRegister();
         SolarCreativeTabs.loadAndRegister(bus);

@@ -9,13 +9,17 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class SolarPanelCTBehaviour extends ConnectedTextureBehaviour.Base {
+public class PanelCTBehaviour extends ConnectedTextureBehaviour.Base {
     private final CTSpriteShiftEntry top;
-    private final CTSpriteShiftEntry bottom;
+    @Nullable private final CTSpriteShiftEntry bottom;
 
-    public SolarPanelCTBehaviour(CTSpriteShiftEntry top, CTSpriteShiftEntry bottom) {
+    public PanelCTBehaviour(CTSpriteShiftEntry top, @Nullable CTSpriteShiftEntry bottom) {
         this.top = top;
         this.bottom = bottom;
+    }
+
+    public PanelCTBehaviour(CTSpriteShiftEntry top) {
+        this(top, null);
     }
 
     @Override
