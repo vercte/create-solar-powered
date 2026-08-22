@@ -43,21 +43,12 @@ public class SolarPanelBlock extends BasePanelBlock implements IWrenchable, IBE<
     }
 
     @Override
-    public boolean canConnectRedstone(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @Nullable Direction direction) {
+    protected boolean isSignalSource(@NotNull BlockState state) {
         return true;
     }
 
     @Override
     public int getSignal(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
-        return getRedstoneSignal(level, pos);
-    }
-
-    @Override
-    public int getDirectSignal(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Direction direction) {
-        return getRedstoneSignal(level, pos);
-    }
-
-    private int getRedstoneSignal(BlockGetter level, BlockPos pos) {
         if (level.getBlockEntity(pos) instanceof SolarPanelBlockEntity be) return be.getRedstoneOutput();
         return 0;
     }
