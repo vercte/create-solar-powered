@@ -13,6 +13,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarBlocks;
+import uwu.hachiro.createsolar.SolarItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -46,5 +47,13 @@ public class SolarStandardRecipeGen extends RecipeProvider {
                 .unlockedBy("has_sculk", has(Items.SCULK))
                 .unlockedBy("has_echo_shard", has(Items.ECHO_SHARD))
                 .save(output, CreateSolarPowered.at("shaped/sculk_panel"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, SolarItems.SUNGLASSES)
+                .define('I', Items.AMETHYST_SHARD)
+                .define('8', AllItems.GOGGLES)
+                .pattern("I8I")
+                .unlockedBy("has_amethyst", has(Items.AMETHYST_BLOCK))
+                .unlockedBy("has_goggles", has(AllItems.GOGGLES))
+                .save(output, CreateSolarPowered.at("shaped/sunglasses"));
     }
 }

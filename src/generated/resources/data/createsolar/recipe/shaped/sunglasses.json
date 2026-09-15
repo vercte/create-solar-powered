@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "8": {
+      "item": "create:goggles"
+    },
+    "I": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "pattern": [
+    "I8I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createsolar:sunglasses"
+  }
+}
