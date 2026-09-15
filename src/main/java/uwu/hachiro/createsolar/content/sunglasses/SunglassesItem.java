@@ -67,6 +67,7 @@ public class SunglassesItem extends Item implements Equipable {
 
     private void addAttributeTooltips(final AddAttributeTooltipsEvent event) {
         if(!event.shouldShow()) return;
+        if(!event.getStack().is(this)) return;
 
         event.addTooltipLines(Component.translatable("item.modifiers.head").withStyle(ChatFormatting.GRAY));
         event.addTooltipLines(
