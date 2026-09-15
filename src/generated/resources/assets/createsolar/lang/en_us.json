@@ -3,6 +3,7 @@
   "block.createsolar.growth_lamp": "Growth Lamp",
   "block.createsolar.sculk_panel": "Sculk Panel",
   "block.createsolar.solar_panel": "Solar Panel",
+  "createsolar.attribute.name.generic.coolness": "Coolness",
   "createsolar.ponder.sculk_panel.collection": "Collecting Experience",
   "createsolar.ponder.sculk_panel.header": "Sculk Panel",
   "createsolar.ponder.sculk_panel.intro": "Generating Experience from Moonlight",
@@ -24,5 +25,9 @@
   "createsolar.tooltip.solar_panel.info": "Solar Panel Info:",
   "createsolar.tooltip.solar_panel.postamble": " at current sun strength",
   "item.createsolar.soul_shard": "Soul Shard",
+  "item.createsolar.sunglasses": "Sunglasses",
+  "item.createsolar.sunglasses.tooltip.behaviour1": "_Kinetic components_ show added _Stress Impact_ or _Capacity_. _Stressometers_ show statistics of their _attached kinetic network_. Some other blocks reveal information such as item and fluid content.",
+  "item.createsolar.sunglasses.tooltip.condition1": "When looking at blocks",
+  "item.createsolar.sunglasses.tooltip.summary": "Augments your HUD with _miscellaneous information_ about placed components.",
   "itemGroup.createsolar.base": "Create: Solar Powered"
 }

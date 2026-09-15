@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "base": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "createsolar:item/sunglasses"
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "head": {
+      "parent": "createsolar:item/sunglasses_worn"
+    }
+  }
+}

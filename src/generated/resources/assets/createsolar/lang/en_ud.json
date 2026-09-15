@@ -3,6 +3,7 @@
   "block.createsolar.growth_lamp": "dɯɐꞀ ɥʇʍoɹ⅁",
   "block.createsolar.sculk_panel": "ןǝuɐԀ ʞןnɔS",
   "block.createsolar.solar_panel": "ןǝuɐԀ ɹɐןoS",
+  "createsolar.attribute.name.generic.coolness": "ssǝuןooƆ",
   "createsolar.ponder.sculk_panel.collection": "ǝɔuǝıɹǝdxƎ buıʇɔǝןןoƆ",
   "createsolar.ponder.sculk_panel.header": "ןǝuɐԀ ʞןnɔS",
   "createsolar.ponder.sculk_panel.intro": "ʇɥbıןuooW ɯoɹɟ ǝɔuǝıɹǝdxƎ buıʇɐɹǝuǝ⅁",
@@ -24,5 +25,9 @@
   "createsolar.tooltip.solar_panel.info": ":oɟuI ןǝuɐԀ ɹɐןoS",
   "createsolar.tooltip.solar_panel.postamble": "ɥʇbuǝɹʇs uns ʇuǝɹɹnɔ ʇɐ ",
   "item.createsolar.soul_shard": "pɹɐɥS ןnoS",
+  "item.createsolar.sunglasses": "sǝssɐןbunS",
+  "item.createsolar.sunglasses.tooltip.behaviour1": "˙ʇuǝʇuoɔ pınןɟ puɐ ɯǝʇı sɐ ɥɔns uoıʇɐɯɹoɟuı ןɐǝʌǝɹ sʞɔoןq ɹǝɥʇo ǝɯoS ˙‾ʞɹoʍʇǝu ɔıʇǝuıʞ pǝɥɔɐʇʇɐ‾ ɹıǝɥʇ ɟo sɔıʇsıʇɐʇs ʍoɥs ‾sɹǝʇǝɯossǝɹʇS‾ ˙‾ʎʇıɔɐdɐƆ‾ ɹo ‾ʇɔɐdɯI ssǝɹʇS‾ pǝppɐ ʍoɥs ‾sʇuǝuodɯoɔ ɔıʇǝuıʞ‾",
+  "item.createsolar.sunglasses.tooltip.condition1": "sʞɔoןq ʇɐ buıʞooן uǝɥM",
+  "item.createsolar.sunglasses.tooltip.summary": "˙sʇuǝuodɯoɔ pǝɔɐןd ʇnoqɐ ‾uoıʇɐɯɹoɟuı snoǝuɐןןǝɔsıɯ‾ ɥʇıʍ ᗡ∩H ɹnoʎ sʇuǝɯbnⱯ",
   "itemGroup.createsolar.base": "pǝɹǝʍoԀ ɹɐןoS :ǝʇɐǝɹƆ"
 }
