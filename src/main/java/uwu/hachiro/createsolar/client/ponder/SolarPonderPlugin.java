@@ -20,8 +20,5 @@ public class SolarPonderPlugin implements PonderPlugin {
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
-
-        HELPER.addStoryBoard(SolarBlocks.SOLAR_PANEL, "solar_panel/intro", SolarPonderScenes::solarPanel);
-        HELPER.addStoryBoard(SolarBlocks.SCULK_PANEL, "sculk_panel/intro", SolarPonderScenes::sculkPanel);
     }
 }
