@@ -17,7 +17,6 @@ public class SolarBlockEntities {
             .validBlock(SolarBlocks.SCULK_PANEL)
             .register();
 
-
     public static final BlockEntityEntry<GrowthLampBlockEntity> GROWTH_LAMP = REGISTRATE.blockEntity("growth_lamp", GrowthLampBlockEntity::new)
             .validBlock(SolarBlocks.GROWTH_LAMP)
             .register();

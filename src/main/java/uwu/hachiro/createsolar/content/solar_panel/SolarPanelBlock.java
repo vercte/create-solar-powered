@@ -5,41 +5,20 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import uwu.hachiro.createsolar.SolarBlockEntities;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.SolarParticles;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
-import uwu.hachiro.createsolar.content.solar_panel.storage.SolarPanelSharedEnergyStoragePropagator;
 
 public class SolarPanelBlock extends BasePanelBlock implements IWrenchable, IBE<SolarPanelBlockEntity> {
     public SolarPanelBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState state, @Nullable LivingEntity entity, @NotNull ItemStack stack) {
-        SolarPanelSharedEnergyStoragePropagator.propagateStartingAt(level, blockPos);
-    }
-
-    @Override
-    protected void onRemove(@NotNull BlockState original, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState replacement, boolean isMoving) {
-        if(!original.is(replacement.getBlock())) {
-            BlockEntity be = level.getBlockEntity(blockPos);
-            if(be instanceof SolarPanelBlockEntity panel && panel.getSharedEnergyStorage() != null) {
-                SolarPanelSharedEnergyStoragePropagator.trySplit(level, blockPos);
-                panel.getSharedEnergyStorage().remove(panel);
-            }
-        }
-        super.onRemove(original, level, blockPos, replacement, isMoving);
     }
 
     @Override
