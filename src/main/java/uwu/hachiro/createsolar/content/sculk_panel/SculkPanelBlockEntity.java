@@ -4,8 +4,10 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -76,6 +78,18 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
         level.setBlock(below, transformedBlock, Block.UPDATE_ALL);
         recipe.rollResults(level.random)
                 .forEach(stack -> Block.popResource(level, below, stack));
+
+        ((ServerLevel)level).sendParticles(
+                ParticleTypes.SOUL_FIRE_FLAME,
+                getBlockPos().getCenter().x(),
+                getBlockPos().getCenter().y() - 1,
+                getBlockPos().getCenter().z(),
+                32,
+                0.5,
+                0.5,
+                0.5,
+                0.01
+        );
 
         return true;
     }
