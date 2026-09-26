@@ -40,7 +40,7 @@ public class SunglassesItem extends Item implements Equipable {
     }
 
     static {
-        GogglesItem.addIsWearingPredicate(player -> SolarItems.SUNGLASSES.isIn(player.getItemBySlot(EquipmentSlot.HEAD)));
+        GogglesItem.addIsWearingPredicate(player -> player.getItemBySlot(EquipmentSlot.HEAD).is(SolarItems.SUNGLASSES));
     }
 
     @NotNull

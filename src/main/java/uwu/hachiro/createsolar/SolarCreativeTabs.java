@@ -17,6 +17,7 @@ public class SolarCreativeTabs {
 
     private static final ResourceLocation CREATE_ADDITION_TAB_LOCATION = ResourceLocation.fromNamespaceAndPath("createaddition", "createaddition");
 
+    @SuppressWarnings("unused")
     public static final Supplier<CreativeModeTab> BASE = CREATIVE_TABS.register(
             "base",
             () -> CreativeModeTab.builder()
@@ -26,7 +27,7 @@ public class SolarCreativeTabs {
                     )
                     .title(Component.translatable("itemGroup.createsolar.base"))
                     .displayItems(SolarCreativeTabs::displayItems)
-                    .icon(SolarBlocks.SOLAR_PANEL::asStack)
+                    .icon(SolarItems.SOLAR_PANEL::toStack)
                     .build()
     );
 

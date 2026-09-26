@@ -1,19 +1,18 @@
 package uwu.hachiro.createsolar.util.datagen;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.simibubi.create.foundation.utility.FilesHelper;
-import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import uwu.hachiro.createsolar.CreateSolarPowered;
+import uwu.hachiro.createsolar.util.datagen.assets.SolarBlockStateGen;
+import uwu.hachiro.createsolar.util.datagen.assets.SolarItemModelGen;
+import uwu.hachiro.createsolar.util.datagen.assets.SolarLangGen;
 import uwu.hachiro.createsolar.util.datagen.assets.SolarParticleDescriptionGen;
+import uwu.hachiro.createsolar.util.datagen.data.SolarBlockTagGen;
+import uwu.hachiro.createsolar.util.datagen.data.SolarLootProvider;
 import uwu.hachiro.createsolar.util.datagen.data.SolarRecipeProvider;
 import uwu.hachiro.createsolar.util.datagen.data.SolarStandardRecipeGen;
 
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class SolarDatagen {
@@ -24,29 +23,16 @@ public class SolarDatagen {
 
         if(event.includeClient()) {
             event.addProvider(new SolarParticleDescriptionGen(output, helper));
+            event.addProvider(new SolarBlockStateGen(output, helper));
+            event.addProvider(new SolarItemModelGen(output, helper));
+            event.addProvider(new SolarLangGen(output));
         }
 
         if(event.includeServer()) {
             SolarRecipeProvider.registerAllProcessing(event.getGenerator(), output, provider);
             event.addProvider(new SolarStandardRecipeGen(output, provider));
+            event.addProvider(new SolarLootProvider(output, provider));
+            event.addProvider(new SolarBlockTagGen(output, provider, helper));
         }
-    }
-
-    @SuppressWarnings("unused")
-    public static void gatherExtraLang(final GatherDataEvent event) {
-        CreateSolarPowered.registrate().addDataGenerator(ProviderType.LANG, lang -> {
-            String interfacePath = "assets/createsolar/lang/default/interface.json"; // code STOLEN. TAKEN. THIEVED from Create
-            JsonElement jsonElement = FilesHelper.loadJsonResource(interfacePath);   // except its legal teehee :3c
-            if (jsonElement == null) {
-                throw new IllegalStateException(String.format("Could not find interface lang file: %s", interfacePath));
-            }
-
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue().getAsString();
-                lang.add(key, value);
-            }
-        });
     }
 }

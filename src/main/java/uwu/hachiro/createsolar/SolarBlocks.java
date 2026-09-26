@@ -1,93 +1,63 @@
 package uwu.hachiro.createsolar;
 
-import com.simibubi.create.foundation.data.BlockStateGen;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import com.tterrag.registrate.util.entry.BlockEntry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoulSandBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.model.generators.*;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlock;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlock;
-import uwu.hachiro.createsolar.content.solar_panel.PanelCTBehaviour;
 import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlock;
 
-import static com.simibubi.create.foundation.data.CreateRegistrate.connectedTextures;
+import java.util.Collection;
 
 public class SolarBlocks {
-    private static final CreateRegistrate REGISTRATE = CreateSolarPowered.registrate();
+    private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CreateSolarPowered.ID);
 
-    public static final BlockEntry<SolarPanelBlock> SOLAR_PANEL = REGISTRATE.block("solar_panel", SolarPanelBlock::new)
-            .properties(p -> p
+    public static final DeferredBlock<SolarPanelBlock> SOLAR_PANEL = BLOCKS.registerBlock(
+            "solar_panel",
+            SolarPanelBlock::new,
+            BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(1.0F)
                     .sound(SoundType.NETHERITE_BLOCK)
-            )
-            .blockstate(SolarBlocks::solarPanelModel)
-            .onRegister(connectedTextures(() -> new PanelCTBehaviour(SolarSpriteShifts.SOLAR_PANEL_TOP, SolarSpriteShifts.SOLAR_PANEL_BOTTOM)))
-            .simpleItem()
-            .register();
+    );
 
-    public static final BlockEntry<SculkPanelBlock> SCULK_PANEL = REGISTRATE.block("sculk_panel", SculkPanelBlock::new)
-            .properties(p -> p
+    public static final DeferredBlock<SculkPanelBlock> SCULK_PANEL = BLOCKS.registerBlock(
+            "sculk_panel",
+            SculkPanelBlock::new,
+            BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(1.0F)
                     .sound(SoundType.BONE_BLOCK)
-            )
-            .blockstate(SolarBlocks::solarPanelModel)
-            .onRegister(connectedTextures(() -> new PanelCTBehaviour(SolarSpriteShifts.SCULK_PANEL_TOP)))
-            .simpleItem()
-            .register();
+    );
 
-    public static final BlockEntry<GrowthLampBlock> GROWTH_LAMP = REGISTRATE.block("growth_lamp", GrowthLampBlock::new)
-            .properties(p -> p
+    public static final DeferredBlock<GrowthLampBlock> GROWTH_LAMP = BLOCKS.registerBlock(
+            "growth_lamp",
+            GrowthLampBlock::new,
+            BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN)
                     .strength(1.0F)
                     .lightLevel(s -> s.getValue(GrowthLampBlock.ACTIVE) ? 15 : 0)
-            )
-            .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, s -> {
-                boolean active = s.getValue(GrowthLampBlock.ACTIVE);
-                String name = c.getName() + (active ? "_active" : "");
-                ResourceLocation texture = CreateSolarPowered.at("block/growth_lamp_" + (active ? "on" : "off"));
-                return p.models().cubeAll("block/" + name, texture);
-            }))
-            .simpleItem()
-            .register();
+    );
 
-    public static final BlockEntry<SoulSandBlock> CHARGED_SOUL_SAND = REGISTRATE.block("charged_soul_sand", SoulSandBlock::new)
-            .initialProperties(() -> Blocks.SOUL_SAND)
-            .tag(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.SOUL_SPEED_BLOCKS)
-            .loot((lt, b) -> {
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b,
-                                        LootItem.lootTableItem(SolarItems.SOUL_SHARD.get())
-                                            .apply(SetItemCountFunction.setCount(
-                                                        UniformGenerator.between(2, 3)
-                                                    ))
-                                )
-                        )
-                );
-            })
-            .simpleItem()
-            .register();
+    public static final DeferredBlock<SoulSandBlock> CHARGED_SOUL_SAND = BLOCKS.registerBlock(
+            "charged_soul_sand",
+            SoulSandBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_SAND)
+    );
 
-    private static <T extends BasePanelBlock> void solarPanelModel(DataGenContext<Block, T> c, RegistrateBlockstateProvider p) {
-        BlockStateGen.simpleBlock(c, p, s -> {
-            boolean active = s.getValue(BasePanelBlock.ACTIVE);
-            String name = c.getName() + (active ? "_active" : "");
-            return p.models().getExistingFile(p.modLoc("block/" + name));
-        });
+    public static Collection<DeferredHolder<Block, ? extends Block>> getEntries() {
+        return BLOCKS.getEntries();
     }
 
-    public static void loadAndRegister() {}
+    public static void loadAndRegister(IEventBus bus) {
+        BLOCKS.register(bus);
+    }
 }

@@ -35,11 +35,15 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
 
     private static final DecimalFormat ENERGY_FORMAT = new DecimalFormat("0.00");
 
-    public SolarPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected SolarPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
         this.lastRedstoneOutput = 0;
         this.capability = new Capability();
+    }
+
+    public SolarPanelBlockEntity(BlockPos pos, BlockState state) {
+        this(SolarBlockEntities.SOLAR_PANEL.get(), pos, state);
     }
 
     @Override
@@ -136,16 +140,22 @@ public class SolarPanelBlockEntity extends BasePanelBlockEntity implements IHave
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.info")
-                .withStyle(ChatFormatting.WHITE))
+        SolarLang.builder().translate("tooltip.solar_panel.info")
+                .style(ChatFormatting.WHITE)
                 .forGoggles(tooltip);
 
         int output = calculateOutput();
         int efficiency = (int)((double)output / SolarConfig.SOLAR_PANEL_MAX_OUTPUT.getAsInt() * 100);
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.solar_panel.efficiency").withStyle(ChatFormatting.GRAY))
+        SolarLang.builder().translate("tooltip.solar_panel.efficiency")
+                .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip);
-        SolarLang.builder().add(Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW))
-                .add(Component.translatable("createsolar.tooltip.solar_panel.postamble").withStyle(ChatFormatting.DARK_GRAY))
+        SolarLang.builder().add(
+                    Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW)
+                )
+                .add(
+                        SolarLang.builder().translate("tooltip.solar_panel.postamble")
+                                .style(ChatFormatting.DARK_GRAY)
+                )
                 .forGoggles(tooltip);
 
         double perTick = (double)output / SolarConfig.SOLAR_PANEL_UPDATE_INTERVAL.getAsInt();

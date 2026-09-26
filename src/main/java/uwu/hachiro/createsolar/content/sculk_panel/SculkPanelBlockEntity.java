@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import uwu.hachiro.createsolar.SolarBlockEntities;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.SolarRecipeTypes;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlockEntity;
@@ -26,8 +27,12 @@ import java.util.Optional;
 public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHaveGoggleInformation {
     private double chargingProgress;
 
-    public SculkPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected SculkPanelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    public SculkPanelBlockEntity(BlockPos pos, BlockState state) {
+        this(SolarBlockEntities.SCULK_PANEL.get(), pos, state);
     }
 
     @Override
@@ -101,9 +106,23 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        SolarLang.builder().add(Component.translatable("createsolar.tooltip.sculk_panel.info")
-                .withStyle(ChatFormatting.WHITE))
+        SolarLang.builder().translate("tooltip.sculk_panel.info")
+                .style(ChatFormatting.WHITE)
                 .forGoggles(tooltip);
+
+        double efficiency = getCycleValue();
+        SolarLang.builder().translate("tooltip.sculk_panel.efficiency")
+                .style(ChatFormatting.GRAY)
+                .forGoggles(tooltip);
+        SolarLang.builder().add(
+                        Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW)
+                )
+                .add(
+                        SolarLang.builder().translate("tooltip.sculk_panel.postamble")
+                                .style(ChatFormatting.DARK_GRAY)
+                )
+                .forGoggles(tooltip);
+
         return true;
     }
 

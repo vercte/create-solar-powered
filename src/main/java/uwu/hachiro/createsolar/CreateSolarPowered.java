@@ -1,14 +1,6 @@
 package uwu.hachiro.createsolar;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipModifier;
-import net.createmod.catnip.lang.FontHelper;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -23,19 +15,10 @@ import uwu.hachiro.createsolar.util.datagen.SolarDatagen;
 public class CreateSolarPowered {
     public static final String ID = "createsolar";
 
-    private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID)
-            .defaultCreativeTab((ResourceKey<CreativeModeTab>)null)
-            .setTooltipModifierFactory(item ->
-                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
-                            .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
-            );
-
     public CreateSolarPowered(IEventBus bus, ModContainer modContainer) {
-        REGISTRATE.registerEventListeners(bus);
-
-        SolarItems.loadAndRegister();
-        SolarBlocks.loadAndRegister();
-        SolarBlockEntities.loadAndRegister();
+        SolarItems.loadAndRegister(bus);
+        SolarBlocks.loadAndRegister(bus);
+        SolarBlockEntities.loadAndRegister(bus);
         SolarCreativeTabs.loadAndRegister(bus);
         SolarRecipeTypes.loadAndRegister(bus);
 
@@ -43,7 +26,6 @@ public class CreateSolarPowered {
 
         bus.addListener(this::registerCapabilities);
         bus.addListener(SolarDatagen::gatherData);
-        bus.addListener(EventPriority.HIGHEST, SolarDatagen::gatherExtraLang);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, SolarConfig.SPEC);
     }
@@ -59,10 +41,6 @@ public class CreateSolarPowered {
                 SolarBlockEntities.GROWTH_LAMP.get(),
                 GrowthLampBlockEntity::getCapability
         );
-    }
-
-    public static CreateRegistrate registrate() {
-        return REGISTRATE;
     }
 
     public static ResourceLocation at(String path) {

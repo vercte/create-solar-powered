@@ -1,25 +1,35 @@
 package uwu.hachiro.createsolar;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlockEntity;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
 import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 
+import java.util.function.Supplier;
+
+@SuppressWarnings("DataFlowIssue")
 public class SolarBlockEntities {
-    private static final CreateRegistrate REGISTRATE = CreateSolarPowered.registrate();
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, CreateSolarPowered.ID);
 
-    public static final BlockEntityEntry<SolarPanelBlockEntity> SOLAR_PANEL = REGISTRATE.blockEntity("solar_panel", SolarPanelBlockEntity::new)
-            .validBlock(SolarBlocks.SOLAR_PANEL)
-            .register();
+    public static final Supplier<BlockEntityType<SolarPanelBlockEntity>> SOLAR_PANEL = BLOCK_ENTITIES.register(
+            "solar_panel",
+            () -> BlockEntityType.Builder.of(SolarPanelBlockEntity::new, SolarBlocks.SOLAR_PANEL.get()).build(null)
+        );
 
-    public static final BlockEntityEntry<SculkPanelBlockEntity> SCULK_PANEL = REGISTRATE.blockEntity("sculk_panel", SculkPanelBlockEntity::new)
-            .validBlock(SolarBlocks.SCULK_PANEL)
-            .register();
+    public static final Supplier<BlockEntityType<SculkPanelBlockEntity>> SCULK_PANEL = BLOCK_ENTITIES.register(
+            "sculk_panel",
+            () -> BlockEntityType.Builder.of(SculkPanelBlockEntity::new, SolarBlocks.SCULK_PANEL.get()).build(null)
+    );
 
-    public static final BlockEntityEntry<GrowthLampBlockEntity> GROWTH_LAMP = REGISTRATE.blockEntity("growth_lamp", GrowthLampBlockEntity::new)
-            .validBlock(SolarBlocks.GROWTH_LAMP)
-            .register();
+    public static final Supplier<BlockEntityType<GrowthLampBlockEntity>> GROWTH_LAMP = BLOCK_ENTITIES.register(
+            "growth_lamp",
+            () -> BlockEntityType.Builder.of(GrowthLampBlockEntity::new, SolarBlocks.GROWTH_LAMP.get()).build(null)
+    );
 
-    public static void loadAndRegister() {}
+    public static void loadAndRegister(IEventBus bus) {
+        BLOCK_ENTITIES.register(bus);
+    }
 }

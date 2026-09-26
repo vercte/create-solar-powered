@@ -1,32 +1,24 @@
 package uwu.hachiro.createsolar;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import uwu.hachiro.createsolar.content.sunglasses.SunglassesItem;
 
 public class SolarItems {
-    private static final CreateRegistrate REGISTRATE = CreateSolarPowered.registrate();
+    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CreateSolarPowered.ID);
 
-    public static final ItemEntry<SunglassesItem> SUNGLASSES = REGISTRATE.item("sunglasses", SunglassesItem::new)
-            .model((c, p) -> {
-                p.withExistingParent("createsolar:sunglasses", "item/generated")
-                        .customLoader(SeparateTransformsModelBuilder::begin)
-                        .base(
-                                p.nested().parent(new ModelFile.UncheckedModelFile("item/generated"))
-                                        .texture("layer0", CreateSolarPowered.at("item/sunglasses"))
-                        ).perspective(
-                                ItemDisplayContext.HEAD,
-                                p.nested().parent(p.getExistingFile(CreateSolarPowered.at("item/sunglasses_worn")))
-                        );
-            })
-            .register();
+    public static final DeferredItem<SunglassesItem> SUNGLASSES = ITEMS.registerItem("sunglasses", SunglassesItem::new);
 
-    public static final ItemEntry<Item> SOUL_SHARD = REGISTRATE.item("soul_shard", Item::new)
-            .register();
+    public static final DeferredItem<BlockItem> SOLAR_PANEL = ITEMS.registerSimpleBlockItem(SolarBlocks.SOLAR_PANEL);
+    public static final DeferredItem<BlockItem> SCULK_PANEL = ITEMS.registerSimpleBlockItem(SolarBlocks.SCULK_PANEL);
+    public static final DeferredItem<BlockItem> GROWTH_LAMP = ITEMS.registerSimpleBlockItem(SolarBlocks.GROWTH_LAMP);
+    public static final DeferredItem<BlockItem> CHARGED_SOUL_SAND = ITEMS.registerSimpleBlockItem(SolarBlocks.CHARGED_SOUL_SAND);
+    public static final DeferredItem<Item> SOUL_SHARD = ITEMS.registerItem("soul_shard", Item::new);
 
-    public static void loadAndRegister() {}
+    public static void loadAndRegister(IEventBus bus) {
+        ITEMS.register(bus);
+    }
 }

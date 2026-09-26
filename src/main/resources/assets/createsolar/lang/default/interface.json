@@ -20,8 +20,5 @@
   "createsolar.tooltip.growth_lamp.active": "Active",
   "createsolar.tooltip.growth_lamp.inactive": "Inactive",
   "createsolar.tooltip.growth_lamp.energy": "Energy: %s / %s FE",
-  "item.createsolar.sunglasses.tooltip.behaviour1": "_Kinetic components_ show added _Stress Impact_ or _Capacity_. _Stressometers_ show statistics of their _attached kinetic network_. Some other blocks reveal information such as item and fluid content.",
-  "item.createsolar.sunglasses.tooltip.condition1": "When looking at blocks",
-  "item.createsolar.sunglasses.tooltip.summary": "Augments your HUD with _miscellaneous information_ about placed components.",
   "createsolar.attribute.name.generic.coolness": "Coolness"
 }

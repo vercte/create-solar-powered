@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/block",
+  "children": {
+    "base": {
+      "parent": "minecraft:block/slab",
+      "render_type": "minecraft:solid",
+      "textures": {
+        "bottom": "createsolar:block/solar_panel_bottom",
+        "side": "createsolar:block/solar_panel_side",
+        "top": "createsolar:block/solar_panel_top"
+      }
+    }
+  },
+  "item_render_order": [
+    "base"
+  ],
+  "loader": "neoforge:composite",
+  "textures": {
+    "particle": "createsolar:block/solar_panel_top"
+  }
+}

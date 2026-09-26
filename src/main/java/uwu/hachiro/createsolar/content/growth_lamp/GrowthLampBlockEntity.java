@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
+import uwu.hachiro.createsolar.SolarBlockEntities;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.content.growth_lamp.storage.GrowthLampSharedEnergyStorage;
 import uwu.hachiro.createsolar.util.SolarLang;
@@ -37,12 +38,16 @@ public class GrowthLampBlockEntity extends SmartBlockEntity implements IHaveGogg
     private static final int RADIUS = 5;
     private static final int BONE_MEAL_CHANCE = 40;
 
-    public GrowthLampBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    protected GrowthLampBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.sharedStorage = null;
         this.energy = 0;
         this.active = false;
         this.nextOperationTick = 0;
+    }
+
+    public GrowthLampBlockEntity(BlockPos pos, BlockState state) {
+        this(SolarBlockEntities.GROWTH_LAMP.get(), pos, state);
     }
 
     @Override
