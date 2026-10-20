@@ -51,6 +51,8 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
 
             if(charged) chargingProgress = 0;
         }
+
+        sendData();
     }
 
     public double getCycleValue() {
@@ -110,16 +112,25 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
                 .style(ChatFormatting.WHITE)
                 .forGoggles(tooltip);
 
-        double efficiency = getCycleValue();
+        int efficiency = (int)(getCycleValue() * 100);
+        int percentStored = (int)Math.min(100, chargingProgress / SolarConfig.SCULK_PANEL_CYCLE_REQUIREMENT.get() * 100);
         SolarLang.builder().translate("tooltip.sculk_panel.efficiency")
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip);
         SolarLang.builder().add(
-                        Component.literal(efficiency + "% \u2600").withStyle(ChatFormatting.YELLOW)
+                        Component.literal(efficiency + "% \u263D").withStyle(ChatFormatting.DARK_AQUA)
                 )
                 .add(
                         SolarLang.builder().translate("tooltip.sculk_panel.postamble")
                                 .style(ChatFormatting.DARK_GRAY)
+                )
+                .forGoggles(tooltip);
+
+        SolarLang.builder().translate("tooltip.sculk_panel.stored")
+                .style(ChatFormatting.GRAY)
+                .forGoggles(tooltip);
+        SolarLang.builder().add(
+                        Component.literal(percentStored + "%").withStyle(ChatFormatting.AQUA)
                 )
                 .forGoggles(tooltip);
 

@@ -1,5 +1,6 @@
 package uwu.hachiro.createsolar.util.datagen.assets;
 
+import com.simibubi.create.Create;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -19,8 +20,8 @@ public class SolarBlockStateGen extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        registerPanelModel(SolarBlocks.SOLAR_PANEL.get());
-        registerPanelModel(SolarBlocks.SCULK_PANEL.get());
+        panelModel(SolarBlocks.SOLAR_PANEL.get());
+        panelModel(SolarBlocks.SCULK_PANEL.get());
 
         getVariantBuilder(SolarBlocks.GROWTH_LAMP.get())
                 .forAllStates(s -> {
@@ -35,7 +36,7 @@ public class SolarBlockStateGen extends BlockStateProvider {
         simpleBlock(SolarBlocks.CHARGED_SOUL_SAND.get());
     }
 
-    private void registerPanelModel(Block block) {
+    private void panelModel(Block block) {
         getVariantBuilder(block).forAllStatesExcept(s -> {
             boolean active = s.getValue(BasePanelBlock.ACTIVE);
 
@@ -46,25 +47,11 @@ public class SolarBlockStateGen extends BlockStateProvider {
             ResourceLocation bottom = CreateSolarPowered.at(baseName + "_bottom").withPrefix("block/");
             ResourceLocation side = CreateSolarPowered.at(baseName + "_side" + (active ? "_active" : "")).withPrefix("block/");
 
-            ModelFile baseBlock = models().getExistingFile(mcLoc("block/block"));
-            ModelFile slab = models().getExistingFile(mcLoc("block/slab"));
-
-
-            BlockModelBuilder builder = models().getBuilder(name)
-                    .parent(baseBlock)
-                    .texture("particle", top)
-                    .customLoader((b, h) ->
-                            CompositeModelBuilder.begin(b, models().existingFileHelper)
-                                .child(
-                                        "base",
-                                        models().nested()
-                                                .parent(slab)
-                                                .texture("top", top)
-                                                .texture("bottom", bottom)
-                                                .texture("side", side)
-                                                .renderType(mcLoc("solid"))
-                                )
-                    ).end();
+            BlockModelBuilder builder = models().withExistingParent(name, mcLoc("block/slab"))
+                    .texture("top", top)
+                    .texture("bottom", bottom)
+                    .texture("side", side)
+                    .texture("particle", top);
 
             return ConfiguredModel.builder()
                     .modelFile(builder)

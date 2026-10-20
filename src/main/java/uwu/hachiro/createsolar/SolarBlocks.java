@@ -11,6 +11,7 @@ import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlock;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlock;
 import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlock;
@@ -36,6 +37,7 @@ public class SolarBlocks {
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(1.0F)
                     .sound(SoundType.BONE_BLOCK)
+                    .lightLevel(s -> s.getValue(BasePanelBlock.ACTIVE) ? 3 : 0)
     );
 
     public static final DeferredBlock<GrowthLampBlock> GROWTH_LAMP = BLOCKS.registerBlock(
