@@ -10,6 +10,7 @@
   "createsolar.ponder.solar_panel.header": "Solar Panel",
   "createsolar.ponder.solar_panel.intro": "Generating Energy from Sunlight",
   "createsolar.ponder.solar_panel.output": "Extracting Energy",
+  "createsolar.recipe.soul_charging": "Soul Charging",
   "createsolar.tooltip.growth_lamp.active": "Active",
   "createsolar.tooltip.growth_lamp.energy": "Energy: %s / %s FE",
   "createsolar.tooltip.growth_lamp.inactive": "Inactive",

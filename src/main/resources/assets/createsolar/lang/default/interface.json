@@ -18,5 +18,6 @@
   "createsolar.tooltip.growth_lamp.active": "Active",
   "createsolar.tooltip.growth_lamp.inactive": "Inactive",
   "createsolar.tooltip.growth_lamp.energy": "Energy: %s / %s FE",
-  "createsolar.attribute.name.generic.coolness": "Coolness"
+  "createsolar.attribute.name.generic.coolness": "Coolness",
+  "createsolar.recipe.soul_charging": "Soul Charging"
 }
