@@ -84,10 +84,12 @@ public abstract class BasePanelBlock extends Block {
 
         @Override
         public PlacementOffset getOffset(@NotNull Player player, @NotNull Level world, @NotNull BlockState state, @NotNull BlockPos pos, BlockHitResult ray) {
-            List<Direction> directions = IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(),
+            List<Direction> directions = IPlacementHelper.orderedByDistanceExceptAxis(
+                    pos, ray.getLocation(),
                     Direction.Axis.Y,
                     dir -> world.getBlockState(pos.relative(dir))
-                            .canBeReplaced());
+                            .canBeReplaced()
+            );
 
             if (directions.isEmpty())
                 return PlacementOffset.fail();
