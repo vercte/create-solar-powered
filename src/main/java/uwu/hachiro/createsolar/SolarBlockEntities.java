@@ -6,7 +6,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlockEntity;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
-import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 
 import java.util.function.Supplier;
 

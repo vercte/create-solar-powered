@@ -28,23 +28,6 @@ public class GrowthLampBlock extends Block implements IWrenchable, IBE<GrowthLam
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity entity, @NotNull ItemStack stack) {
-        GrowthLampSharedEnergyStoragePropagator.propagateStartingAt(level, pos);
-    }
-
-    @Override
-    protected void onRemove(@NotNull BlockState original, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState replacement, boolean isMoving) {
-        if (!original.is(replacement.getBlock())) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof GrowthLampBlockEntity lamp && lamp.getSharedEnergyStorage() != null) {
-                GrowthLampSharedEnergyStoragePropagator.trySplit(level, pos);
-                lamp.getSharedEnergyStorage().remove(lamp);
-            }
-        }
-        super.onRemove(original, level, pos, replacement, isMoving);
-    }
-
-    @Override
     public boolean canConnectRedstone(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @Nullable Direction direction) {
         return true;
     }
