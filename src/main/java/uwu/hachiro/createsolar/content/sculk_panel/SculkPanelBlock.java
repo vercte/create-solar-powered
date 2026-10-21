@@ -1,6 +1,7 @@
 package uwu.hachiro.createsolar.content.sculk_panel;
 
 import com.simibubi.create.foundation.block.IBE;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
@@ -10,10 +11,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.SolarBlockEntities;
+import uwu.hachiro.createsolar.SolarBlocks;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
 import uwu.hachiro.createsolar.content.panel.PanelCalculations;
 
 public class SculkPanelBlock extends BasePanelBlock implements IBE<SculkPanelBlockEntity> {
+    private static final int placementHelperId = PlacementHelpers.register(new PanelPlacementHelper<>(SolarBlocks.SCULK_PANEL));
+
     public SculkPanelBlock(Properties properties) {
         super(properties);
     }
@@ -53,6 +57,11 @@ public class SculkPanelBlock extends BasePanelBlock implements IBE<SculkPanelBlo
                 );
             }
         }
+    }
+
+    @Override
+    public int getPlacementHelperId() {
+        return placementHelperId;
     }
 
     @Override

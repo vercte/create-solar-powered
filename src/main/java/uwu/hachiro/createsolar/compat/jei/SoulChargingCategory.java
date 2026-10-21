@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.SolarBlocks;
 import uwu.hachiro.createsolar.content.sculk_panel.SoulChargingRecipe;
+import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlock;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,8 @@ public class SoulChargingCategory extends CreateRecipeCategory<SoulChargingRecip
                 .defaultBlockState();
 
         BlockState panel = SolarBlocks.SCULK_PANEL.get()
-                .defaultBlockState();
+                .defaultBlockState()
+                .setValue(SolarPanelBlock.ACTIVE, true);
 
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();

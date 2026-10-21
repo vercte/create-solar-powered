@@ -15,6 +15,6 @@ public class SculkPanelCalculations {
         if(time < PEAK_GENERATION_END && time > PEAK_GENERATION_START) return 1;
 
         if(time < PEAK_GENERATION_START) return (double)(time - TIME_GENERATION_START) / (PEAK_GENERATION_START - TIME_GENERATION_START);
-        return 1 - (double)(time - TIME_GENERATION_END) / (TIME_GENERATION_END - PEAK_GENERATION_END);
+        return (double)(time - TIME_GENERATION_END) / (PEAK_GENERATION_END - TIME_GENERATION_END);
     }
 }
