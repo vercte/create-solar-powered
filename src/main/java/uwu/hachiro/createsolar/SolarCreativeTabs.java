@@ -35,10 +35,10 @@ public class SolarCreativeTabs {
         output.accept(SolarBlocks.SOLAR_PANEL);
         output.accept(SolarBlocks.SCULK_PANEL);
         output.accept(SolarBlocks.GROWTH_LAMP);
-        output.accept(SolarItems.SUNGLASSES);
 
         output.accept(SolarBlocks.CHARGED_SOUL_SAND);
         output.accept(SolarItems.SOUL_SHARD);
+        output.accept(SolarItems.SUNGLASSES);
     }
 
     public static void loadAndRegister(IEventBus bus) {

@@ -2,6 +2,7 @@ package uwu.hachiro.createsolar.content.solar_panel;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -12,11 +13,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.SolarBlockEntities;
+import uwu.hachiro.createsolar.SolarBlocks;
 import uwu.hachiro.createsolar.SolarConfig;
 import uwu.hachiro.createsolar.SolarParticles;
 import uwu.hachiro.createsolar.content.panel.BasePanelBlock;
 
 public class SolarPanelBlock extends BasePanelBlock implements IWrenchable, IBE<SolarPanelBlockEntity> {
+    private static final int placementHelperId = PlacementHelpers.register(new PanelPlacementHelper<>(SolarBlocks.SOLAR_PANEL));
+
     public SolarPanelBlock(Properties properties) {
         super(properties);
     }
@@ -68,6 +72,11 @@ public class SolarPanelBlock extends BasePanelBlock implements IWrenchable, IBE<
                 );
             }
         }
+    }
+
+    @Override
+    public int getPlacementHelperId() {
+        return placementHelperId;
     }
 
     @Override
