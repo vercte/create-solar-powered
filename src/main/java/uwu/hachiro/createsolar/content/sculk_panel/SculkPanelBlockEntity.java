@@ -79,7 +79,6 @@ public class SculkPanelBlockEntity extends BasePanelBlockEntity implements IHave
 
         SoulChargingRecipe recipe = possiblyFoundRecipe.get().value();
         level.playSound(null, below, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.BLOCKS, 1, 1.45f);
-        level.destroyBlock(below, false);
 
         BlockState transformedBlock = recipe.transformBlock(belowState, level.random);
         level.setBlock(below, transformedBlock, Block.UPDATE_ALL);

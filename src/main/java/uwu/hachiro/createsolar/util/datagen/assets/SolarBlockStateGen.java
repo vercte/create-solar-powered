@@ -21,6 +21,9 @@ public class SolarBlockStateGen extends BlockStateProvider {
         panelModel(SolarBlocks.SOLAR_PANEL.get());
         panelModel(SolarBlocks.SCULK_PANEL.get());
 
+        simpleBlock(SolarBlocks.CANNY.get());
+        simpleBlock(SolarBlocks.UNCANNY.get());
+
         getVariantBuilder(SolarBlocks.GROWTH_LAMP.get())
                 .forAllStates(s -> {
                     boolean active = s.getValue(GrowthLampBlock.ACTIVE);

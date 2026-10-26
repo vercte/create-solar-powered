@@ -17,5 +17,6 @@ public class SolarSoulChargingRecipeGen extends SoulChargingRecipeGen {
     }
 
     GeneratedRecipe SOUL_SAND = charging("soul_sand_from_sand", ItemTags.SAND, Blocks.SOUL_SAND);
+    GeneratedRecipe UNCANNY = charging("uncanny", SolarBlocks.CANNY.get(), SolarBlocks.UNCANNY.get());
     GeneratedRecipe CHARGED_SOUL_SAND = charging("charged_soul_sand_from_soul_sand", Blocks.SOUL_SAND, SolarBlocks.CHARGED_SOUL_SAND.get());
 }

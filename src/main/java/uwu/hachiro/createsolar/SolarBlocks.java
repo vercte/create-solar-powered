@@ -55,6 +55,9 @@ public class SolarBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_SAND)
     );
 
+    public static final DeferredBlock<Block> CANNY = BLOCKS.registerSimpleBlock("canny", BlockBehaviour.Properties.of().strength(0.5f).mapColor(MapColor.SAND));
+    public static final DeferredBlock<Block> UNCANNY = BLOCKS.registerSimpleBlock("uncanny", BlockBehaviour.Properties.of().strength(0.5f).mapColor(MapColor.COLOR_BLACK));
+
     public static Collection<DeferredHolder<Block, ? extends Block>> getEntries() {
         return BLOCKS.getEntries();
     }

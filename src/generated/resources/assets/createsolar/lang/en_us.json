@@ -1,8 +1,10 @@
 {
+  "block.createsolar.canny": "Canny Cat",
   "block.createsolar.charged_soul_sand": "Charged Soul Sand",
   "block.createsolar.growth_lamp": "Growth Lamp",
   "block.createsolar.sculk_panel": "Sculk Panel",
   "block.createsolar.solar_panel": "Solar Panel",
+  "block.createsolar.uncanny": "Uncanny Cat",
   "createsolar.attribute.name.generic.coolness": "Coolness",
   "createsolar.ponder.sculk_panel.collection": "Collecting Experience",
   "createsolar.ponder.sculk_panel.header": "Sculk Panel",

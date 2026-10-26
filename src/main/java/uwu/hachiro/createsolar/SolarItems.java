@@ -18,6 +18,9 @@ public class SolarItems {
     public static final DeferredItem<BlockItem> CHARGED_SOUL_SAND = ITEMS.registerSimpleBlockItem(SolarBlocks.CHARGED_SOUL_SAND);
     public static final DeferredItem<Item> SOUL_SHARD = ITEMS.registerItem("soul_shard", Item::new);
 
+    public static final DeferredItem<BlockItem> CANNY = ITEMS.registerSimpleBlockItem(SolarBlocks.CANNY);
+    public static final DeferredItem<BlockItem> UNCANNY = ITEMS.registerSimpleBlockItem(SolarBlocks.UNCANNY);
+
     public static void loadAndRegister(IEventBus bus) {
         ITEMS.register(bus);
     }

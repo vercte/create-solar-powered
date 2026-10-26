@@ -23,6 +23,9 @@ public class SolarLangGen extends LanguageProvider {
         addBlock(SolarBlocks.GROWTH_LAMP, "Growth Lamp");
         addBlock(SolarBlocks.CHARGED_SOUL_SAND, "Charged Soul Sand");
 
+        addBlock(SolarBlocks.CANNY, "Canny Cat");
+        addBlock(SolarBlocks.UNCANNY, "Uncanny Cat");
+
         addItem(SolarItems.SOUL_SHARD, "Soul Shard");
         addItem(SolarItems.SUNGLASSES, "Sunglasses");
 

@@ -1,5 +1,6 @@
 package uwu.hachiro.createsolar.compat.jei;
 
+import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -7,9 +8,11 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.CreateSolarPowered;
 import uwu.hachiro.createsolar.SolarBlocks;
+import uwu.hachiro.createsolar.SolarItems;
 import uwu.hachiro.createsolar.SolarRecipeTypes;
 import uwu.hachiro.createsolar.content.sculk_panel.SoulChargingRecipe;
 
@@ -26,7 +29,12 @@ public class SolarJEIPlugin implements IModPlugin {
     @Override
     public void registerCategories(@NotNull IRecipeCategoryRegistration registration) {
         SOUL_CHARGING = new CreateRecipeCategory.Builder<>(SoulChargingRecipe.class)
-                .addTypedRecipes(SolarRecipeTypes.SOUL_CHARGING)
+                .addRecipeListConsumer(recipes -> CreateJEI.consumeTypedRecipes(recipe -> {
+                            if (recipe.value() instanceof SoulChargingRecipe &&
+                                    !recipe.value().getIngredients().getFirst().test(SolarItems.CANNY.toStack()))
+                                //noinspection unchecked - checked by if statement above
+                                recipes.add((RecipeHolder<SoulChargingRecipe>) recipe);
+                }, SolarRecipeTypes.SOUL_CHARGING.get()))
                 .itemIcon(SolarBlocks.SCULK_PANEL.get())
                 .catalyst(SolarBlocks.SCULK_PANEL::get)
                 .emptyBackground(177, 60)

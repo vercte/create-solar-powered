@@ -32,6 +32,8 @@ public class SolarBlockLootProvider extends BlockLootSubProvider {
         dropSelf(SolarBlocks.SOLAR_PANEL.get());
         dropSelf(SolarBlocks.SCULK_PANEL.get());
         dropSelf(SolarBlocks.GROWTH_LAMP.get());
+        dropSelf(SolarBlocks.CANNY.get());
+        dropSelf(SolarBlocks.UNCANNY.get());
 
         add(SolarBlocks.CHARGED_SOUL_SAND.get(),
                 createSilkTouchDispatchTable(SolarBlocks.CHARGED_SOUL_SAND.get(),

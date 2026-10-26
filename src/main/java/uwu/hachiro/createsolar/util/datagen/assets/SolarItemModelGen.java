@@ -34,6 +34,9 @@ public class SolarItemModelGen extends ItemModelProvider {
         simpleBlockItem(SolarBlocks.GROWTH_LAMP.get());
         simpleBlockItem(SolarBlocks.CHARGED_SOUL_SAND.get());
 
+        simpleBlockItem(SolarBlocks.CANNY.get());
+        simpleBlockItem(SolarBlocks.UNCANNY.get());
+
         basicItem(SolarItems.SOUL_SHARD.get());
     }
 }

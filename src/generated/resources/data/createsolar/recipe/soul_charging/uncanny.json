@@ -1,0 +1,13 @@
+{
+  "type": "createsolar:soul_charging",
+  "ingredients": [
+    {
+      "item": "createsolar:canny"
+    }
+  ],
+  "results": [
+    {
+      "id": "createsolar:uncanny"
+    }
+  ]
+}
