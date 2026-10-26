@@ -4,6 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import uwu.hachiro.createsolar.content.growth_lamp.GrowthLampBlockEntity;
 import uwu.hachiro.createsolar.content.sculk_panel.SculkPanelBlockEntity;
 import uwu.hachiro.createsolar.content.solar_panel.SolarPanelBlockEntity;
 

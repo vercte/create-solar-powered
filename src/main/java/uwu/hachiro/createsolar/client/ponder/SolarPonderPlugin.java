@@ -1,14 +1,12 @@
 package uwu.hachiro.createsolar.client.ponder;
 
-import com.tterrag.registrate.util.entry.ItemProviderEntry;
-import com.tterrag.registrate.util.entry.RegistryEntry;
-
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 import uwu.hachiro.createsolar.CreateSolarPowered;
-import uwu.hachiro.createsolar.SolarBlocks;
+import uwu.hachiro.createsolar.SolarItems;
 
 public class SolarPonderPlugin implements PonderPlugin {
     @Override
@@ -19,6 +17,11 @@ public class SolarPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<DeferredItem<?>> HELPER = helper.withKeyFunction(DeferredItem::getId);
+
+        HELPER.forComponents(SolarItems.SOLAR_PANEL)
+                .addStoryBoard("solar_panel/solar_panel", PanelScenes::solarPanel)
+                .addStoryBoard("solar_panel/array", PanelScenes::array);
+
     }
 }
